@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 import SingleConversationCard from "./SingleConversationCard";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
 const Container = styled.div`
   min-width: 25vw;
@@ -9,8 +11,26 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  background-color: rgb(235, 237, 237);
+  background-color: lightslategrey;
   overflow-y: scroll;
+`;
+
+// background-color: rgb(235, 237, 237);
+
+const AddButton = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 25%;
+  top: 89.5%;
+  background-color: rgb(22, 204, 152);
+  z-index: 1;
+  width: 3rem;
+  height: 3rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
 `;
 
 const convos = [
@@ -37,6 +57,11 @@ class ConversationsPipeline extends React.Component {
             time={convo.time}
           />
         ))}
+        <Link to="#">
+          <AddButton>
+            <AddRoundedIcon />
+          </AddButton>
+        </Link>
       </Container>
     );
   }
