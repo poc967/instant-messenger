@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import SingleConversationCard from "./SingleConversationCard";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
+import { v4 as uuidv4 } from "uuid";
+
 const Container = styled.div`
   min-width: 25vw;
   display: flex;
@@ -34,16 +36,66 @@ const AddButton = styled.div`
 `;
 
 const convos = [
-  { name: "Pat Oconnor", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Billy Bob", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Danielle A", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Ian Oconnor", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Pat Oconnor", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Bill Z", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Pat Oconnor", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Pat Oconnor", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Pat Oconnor", newestMessage: "Yooo whats good!?", time: Date.now() },
-  { name: "Pat Oconnor", newestMessage: "Yooo whats good!?", time: Date.now() },
+  {
+    id: uuidv4(),
+    name: "Pat Oconnor",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Billy Bob",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Danielle A",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Ian Oconnor",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Pat Oconnor",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Bill Z",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Pat Oconnor",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Pat Oconnor",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Pat Oconnor",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
+  {
+    id: uuidv4(),
+    name: "Pat Oconnor",
+    newestMessage: "Yooo whats good!?",
+    time: Date.now(),
+  },
 ];
 
 class ConversationsPipeline extends React.Component {

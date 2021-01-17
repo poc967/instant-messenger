@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import TextInput from "./TextInput";
+import Messages from "./Messages";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,6 +18,7 @@ class Messager extends React.Component {
   render() {
     return (
       <Wrapper>
+        <Messages />
         <TextInput />
       </Wrapper>
     );
