@@ -18,7 +18,7 @@ userRouter.post(
   "/login",
   passport.authenticate("local"),
   (request, response) => {
-    return response.status(200).json({ message: "login successful" });
+    return response.status(200).json(request.user);
   }
 );
 
@@ -28,11 +28,10 @@ userRouter.get(
   "/",
   async (request, response, next) => {
     const isAuth = request.isAuthenticated();
-    console.log(isAuth);
     if (isAuth) {
       next();
     } else {
-      return response.send("not authed for endpoint");
+      return response.status(401).json({ error: "not authed for endpoint" });
     }
   },
   (request, response) => {

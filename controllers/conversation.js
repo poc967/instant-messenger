@@ -14,9 +14,7 @@ const createConversation = async (request, response) => {
     _id: {
       $in: users,
     },
-  })
-    .select("firstName")
-    .exec();
+  });
 
   let newConversation = await new Conversation({
     members: users,
@@ -24,19 +22,34 @@ const createConversation = async (request, response) => {
     messages: [],
   });
 
-  if (!newConversation) {
+  if (!newConversation || !users) {
     return response
       .status(400)
       .json({ message: "the conversation could not be created" });
   } else {
+    users.forEach((user) => {
+      user.conversations.push(newConversation.id);
+      user.save();
+    });
     newConversation.save();
-    return response
-      .status(201)
-      .json({
-        message: "conversation created successfully",
-        data: newConversation.id,
-      });
+    return response.status(201).json({
+      message: "conversation created successfully",
+      data: newConversation.id,
+    });
   }
 };
 
-module.exports = { createConversation };
+const getConversationsByUser = async (request, response, next) => {
+  const { id } = request.user;
+
+  const conversations = await Conversation.find({ members: id });
+  conversations.forEach((conversation) => {
+    conversation.messages.length !== 0
+      ? (conversation.messages =
+          conversation.messages[conversation.messages.length - 1])
+      : (conversation.messages = null);
+  });
+  return response.status(200).json(conversations);
+};
+
+module.exports = { createConversation, getConversationsByUser };

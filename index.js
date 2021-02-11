@@ -3,10 +3,12 @@ const app = express();
 const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
+const cookieParser = require("cookie-parser");
 const userRouter = require("./routers/user");
 const conversationRouter = require("./routers/conversation");
 const messageRouter = require("./routers/message");
 const dotenv = require("dotenv").config();
+const cors = require("cors");
 
 // Connection to MongoDB -----------------------
 mongoose.connect(process.env.db_connection, {
@@ -29,10 +31,25 @@ if (process.env.NODE_ENV === "development") {
 
 // -----------------------------------------------
 
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(
-  session({ secret: "supersecret", resave: false, saveUninitialized: false })
+  session({
+    secret: process.env.cookie_secret,
+    cookie: { secure: false },
+    saveUninitialized: true,
+    resave: true,
+  })
 );
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 

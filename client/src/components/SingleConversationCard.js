@@ -15,13 +15,13 @@ const SingleConversationContainer = styled.div`
 `;
 
 const Name = styled.span`
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 300;
   color: rgb(22, 204, 152);
 `;
 
 const LatestMessage = styled.span`
-  font-size: 0.75rem;
+  font-size: 1rem;
   font-weight: 200;
 `;
 

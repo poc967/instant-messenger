@@ -10,6 +10,10 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
+import PropTypes from "prop-types";
+
+import { logoutUser } from "../actions/authActions";
+import { connect } from "react-redux";
 
 const Nav = styled(Drawer)`
   background-color: red;
@@ -53,10 +57,12 @@ class NavigationBar extends Component {
             </ListItem>
             <ListItem>
               <StyledNavItem>
-                <ExitToAppOutlinedIcon
-                  fontSize="large"
-                  style={{ color: "rgb(22, 204, 152)" }}
-                />
+                <button onClick={this.props.logoutUser}>
+                  <ExitToAppOutlinedIcon
+                    fontSize="large"
+                    style={{ color: "rgb(22, 204, 152)" }}
+                  />
+                </button>
               </StyledNavItem>
             </ListItem>
           </List>
@@ -66,4 +72,8 @@ class NavigationBar extends Component {
   }
 }
 
-export default NavigationBar;
+NavigationBar.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, { logoutUser })(NavigationBar);

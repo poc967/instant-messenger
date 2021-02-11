@@ -16,6 +16,7 @@ const createMessage = async (request, response) => {
     author: request.user._id,
   });
   message.save();
+  conversation = await Conversation.findOne({ _id: conversation });
 
   conversation.messages.push(message);
   conversation.save();

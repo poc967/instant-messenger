@@ -1,7 +1,13 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import PropTypes from "prop-types";
+
+// redux
+import { authenticateUser } from "../actions/authActions";
+import { connect } from "react-redux";
 
 const ComponentWrapper = styled.div`
   height: 100vh;
@@ -54,11 +60,26 @@ const Link = styled.a`
 const TextFieldStyle = {
   paddingBottom: "0.6rem",
 };
-
 class LogIn extends Component {
   state = {
-    email: "",
+    username: "",
     password: "",
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    const { username, password } = this.state;
+
+    if (!username || !password) {
+      return;
+    }
+
+    try {
+      this.props.authenticateUser(username, password);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handleChange = (e) => {
@@ -73,15 +94,16 @@ class LogIn extends Component {
   };
 
   render() {
+    if (this.props.isAuthenticated) return <Redirect to="/" />;
     return (
       <ComponentWrapper>
         <LoginCard>
           <Title>Log In</Title>
           <Form>
             <TextField
-              type="email"
-              name="email"
-              label="Email"
+              type="username"
+              name="username"
+              label="Username"
               id="exampleEmail"
               variant="outlined"
               margin="dense"
@@ -104,6 +126,7 @@ class LogIn extends Component {
                 backgroundColor: "rgb(22, 204, 152, 0.7)",
                 color: "white",
               }}
+              onClick={this.handleSubmit}
             >
               Let's Go!
             </Button>
@@ -119,4 +142,13 @@ class LogIn extends Component {
   }
 }
 
-export default LogIn;
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+LogIn.propTypes = {
+  authenticateUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+};
+
+export default connect(mapStateToProps, { authenticateUser })(LogIn);

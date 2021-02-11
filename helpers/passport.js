@@ -21,6 +21,7 @@ passport.use(
 );
 
 passport.serializeUser(function (user, done) {
+  console.log("running");
   return done(null, user.id);
 });
 

@@ -8,18 +8,18 @@ const Wrapper = styled.div`
   flex-direction: column;
   color: black;
   align-items: flex-start;
-  width: 100%;
   height: 100%;
   overflow-y: scroll;
+  margin: 1rem;
 `;
 
 const AlignmentContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: ${(props) =>
-    props.authorIsCurrentUser ? "flex-start" : "flex-end"};
+    props.authorIsCurrentUser ? "flex-end" : "flex-start"};
   justify-content: ${(props) =>
-    props.authorIsCurrentUser ? "flex-start" : "flex-end"};
+    props.authorIsCurrentUser ? "flex-end" : "flex-start"};
   width: 100%;
   height: auto;
 `;
