@@ -42,13 +42,13 @@ const createConversation = async (request, response) => {
 const getConversationsByUser = async (request, response, next) => {
   const { id } = request.user;
 
-  const conversations = await Conversation.find({ members: id });
-  conversations.forEach((conversation) => {
-    conversation.messages.length !== 0
-      ? (conversation.messages =
-          conversation.messages[conversation.messages.length - 1])
-      : (conversation.messages = null);
-  });
+  let conversations = await Conversation.getAllConversationsByUser(id);
+
+  for (let i = 0; i <= conversations.length - 1; i++) {
+    conversations[i].messages = conversations[i].getLatestMessage();
+
+    conversations[i].members = conversations[i].getConversationTitle(id);
+  }
   return response.status(200).json(conversations);
 };
 

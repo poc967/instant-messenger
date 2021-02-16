@@ -13,10 +13,24 @@ const Wrapper = styled.div`
 `;
 
 class Home extends Component {
+  state = {
+    activeConversationId: null,
+    conversationLoading: false,
+  };
+
+  toggleActiveConversation = (conversationId) => {
+    this.setState({
+      activeConversationId: conversationId,
+    });
+    console.log(this.state);
+  };
+
   render() {
     return (
       <Wrapper>
-        <ConversationsPipeline />
+        <ConversationsPipeline
+          toggleActiveConversation={this.toggleActiveConversation}
+        />
         <Messager />
       </Wrapper>
     );
