@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import SingleConversationCard from "./SingleConversationCard";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -35,78 +36,31 @@ const AddButton = styled.div`
   color: white;
 `;
 
-const convos = [
-  {
-    id: uuidv4(),
-    name: "Pat Oconnor",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Billy Bob",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Danielle A",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Ian Oconnor",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Pat Oconnor",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Bill Z",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Pat Oconnor",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Pat Oconnor",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Pat Oconnor",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-  {
-    id: uuidv4(),
-    name: "Pat Oconnor",
-    newestMessage: "Yooo whats good!?",
-    time: Date.now(),
-  },
-];
-
 class ConversationsPipeline extends React.Component {
+  state = {
+    convos: [],
+  };
+
+  async componentDidMount() {
+    const conversations = await axios.get("http://localhost:8080/conversation");
+    this.setState({
+      convos: conversations.data,
+    });
+  }
+
   render() {
     return (
       <Container>
-        {convos.map((convo) => (
+        {this.state.convos.map((convo, index) => (
           <SingleConversationCard
-            name={convo.name}
-            latestMessage={convo.newestMessage}
-            time={convo.time}
+            id={convo._id}
+            name={`${convo.members[0].firstName} ${convo.members[0].lastName}`}
+            latestMessage={
+              convo.messages !== null ? convo.messages[0].message : null
+            }
+            time={convo.messages !== null ? convo.messages[0].time : null}
+            toggleActiveConversation={this.props.toggleActiveConversation}
+            key={index}
           />
         ))}
         <Link to="#">
