@@ -11,7 +11,6 @@ const Wrapper = styled.div`
   justify-content: flex-start;
   background-color: white;
 `;
-
 class Home extends Component {
   state = {
     activeConversationId: null,

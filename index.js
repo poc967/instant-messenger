@@ -9,6 +9,12 @@ const conversationRouter = require("./routers/conversation");
 const messageRouter = require("./routers/message");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
+const httpServer = require("http").Server(app);
+const io = require("socket.io")(httpServer, {
+  cors: {
+    origin: "localhost:3000",
+  },
+});
 
 // Connection to MongoDB -----------------------
 mongoose.connect(process.env.db_connection, {
@@ -57,6 +63,13 @@ app.use("/user", userRouter);
 app.use("/conversation", conversationRouter);
 app.use("/message", messageRouter);
 
-app.listen(8080, () => {
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("a user disconnected");
+  });
+});
+
+httpServer.listen(8080, () => {
   console.log("Listening on port 8080...");
 });
