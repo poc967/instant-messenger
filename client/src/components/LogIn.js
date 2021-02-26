@@ -4,6 +4,7 @@ import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
+import { socket } from "../socket";
 
 // redux
 import { authenticateUser } from "../actions/authActions";

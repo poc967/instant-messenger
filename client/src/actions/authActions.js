@@ -8,6 +8,7 @@ import {
   REGISTER_SUCCESS,
 } from "./types";
 import axios from "axios";
+import socket from "../socket";
 axios.defaults.withCredentials = true;
 
 export const getUser = () => async (dispatch, getState) => {
@@ -35,6 +36,7 @@ export const authenticateUser = (username, password) => async (dispatch) => {
       username,
       password,
     });
+
     dispatch({
       type: LOGIN_SUCCESS,
       payload: response.data,

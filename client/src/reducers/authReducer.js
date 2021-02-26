@@ -6,6 +6,8 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
 } from "../actions/types";
+import socket from "../socket";
+console.log(socket);
 
 const initialState = {
   isAuthenticated: false,
@@ -45,6 +47,8 @@ const authReducer = (state = initialState, action) => {
         loading: false,
       };
     case LOGIN_SUCCESS:
+      socket.auth = action.payload._id;
+      socket.connect();
       return {
         loading: false,
         isAuthenticated: true,
