@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 import MessageBubble from "./MessageBubble";
 
@@ -24,25 +25,37 @@ const AlignmentContainer = styled.div`
   height: auto;
 `;
 
-const messages = [
-  { message: "test", authorIsCurrentUser: true },
-  { message: "hi", authorIsCurrentUser: false },
-  { message: "how are you?", authorIsCurrentUser: true },
-];
+class Messages extends React.Component {
+  authorIsCurrentUser = (currentUser, author) => {
+    if (currentUser === author) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
-const Messages = (props) => {
-  return (
-    <Wrapper>
-      {messages.map((message) => (
-        <AlignmentContainer authorIsCurrentUser={message.authorIsCurrentUser}>
-          <MessageBubble
-            message={message.message}
-            authorIsCurrentUser={message.authorIsCurrentUser}
-          />
-        </AlignmentContainer>
-      ))}
-    </Wrapper>
-  );
-};
+  render() {
+    return (
+      <Wrapper>
+        {this.props.messages.messages.map((message) => (
+          <AlignmentContainer
+            authorIsCurrentUser={this.authorIsCurrentUser(
+              this.props.currentUser,
+              message.author
+            )}
+          >
+            <MessageBubble
+              message={message.message}
+              authorIsCurrentUser={this.authorIsCurrentUser(
+                this.props.currentUser,
+                message.author
+              )}
+            />
+          </AlignmentContainer>
+        ))}
+      </Wrapper>
+    );
+  }
+}
 
 export default Messages;

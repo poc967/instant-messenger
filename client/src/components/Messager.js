@@ -30,18 +30,31 @@ const Name = styled.span`
   font-weight: 200;
 `;
 
-class Messager extends React.Component {
-  render() {
-    return (
-      <Wrapper>
-        <NameBanner>
-          <Name>Pat O</Name>
-        </NameBanner>
-        <Messages />
-        <TextInput />
-      </Wrapper>
-    );
-  }
-}
+const Messager = (props) => {
+  return (
+    <Wrapper>
+      {!props.activeConversationId ? (
+        <>
+          <span style={{ color: "black" }}>No conversation selected</span>
+        </>
+      ) : (
+        <>
+          <NameBanner>
+            <Name>{`${props.conversation.title.firstName} ${props.conversation.title.lastName}`}</Name>
+          </NameBanner>
+          <Messages
+            activeConversationId={props.activeConversationId}
+            messages={props.conversation}
+            currentUser={props.currentUser}
+          />
+          <TextInput
+            onMessage={props.onMessage}
+            activeConversationId={props.activeConversationId}
+          />
+        </>
+      )}
+    </Wrapper>
+  );
+};
 
 export default Messager;

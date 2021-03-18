@@ -6,3 +6,11 @@ const socket = io("localhost:8080", {
 });
 
 export default socket;
+
+socket.onAny((event, ...args) => {
+  console.log(event, args);
+});
+
+socket.on("connect_error", (err) => {
+  console.log(err);
+});

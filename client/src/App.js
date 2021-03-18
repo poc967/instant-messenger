@@ -10,6 +10,7 @@ import { getUser } from "./actions/authActions";
 import { connect } from "react-redux";
 import { configureStore } from "./store";
 import PropTypes from "prop-types";
+import socket from "./socket";
 
 // components
 import LogIn from "./components/LogIn";
@@ -32,6 +33,9 @@ class App extends Component {
   }
 
   render() {
+    if (this.props.isAuthenticated) {
+      socket.connect();
+    }
     return (
       <AppWrapper>
         <BrowserRouter>
@@ -57,11 +61,13 @@ class App extends Component {
 App.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
   loading: state.auth.loading,
+  user: state.auth.user,
 });
 
 export default connect(mapStateToProps, null)(App);

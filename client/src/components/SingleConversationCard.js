@@ -19,7 +19,10 @@ const Time = styled.span`
 `;
 
 const Button = styled.a`
-  background-color: white;
+  background-color: ${(props) =>
+    props.activeConversationId && props.activeConversationId === props.id
+      ? "rgb(22, 204, 152)"
+      : "white"};
   display: flex;
   width: 95%;
   min-height: 20vh;
@@ -45,11 +48,13 @@ const Button = styled.a`
 const SingleConversationCard = (props) => {
   return (
     <Button href="#" onClick={() => props.toggleActiveConversation(props.id)}>
-      <Name className="child">{props.name}</Name>
-      <LatestMessage className="child">{props.latestMessage}</LatestMessage>
-      <Time className="child">
+      <Name className="child">{`${props.conversation.title.firstName} ${props.conversation.title.lastName}`}</Name>
+      <LatestMessage className="child">
+        {props.conversation.latestMessage[0].message}
+      </LatestMessage>
+      {/* <Time className="child">
         {props.time ? <span>{props.time}</span> : null}
-      </Time>
+      </Time> */}
     </Button>
   );
 };

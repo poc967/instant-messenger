@@ -20,7 +20,7 @@ const createMessage = async (request, response) => {
 
   conversation.messages.push(message);
   conversation.save();
-  return response.status(200).json({ message: "message created successfully" });
+  return response.status(200).json(message);
 };
 
 module.exports = { createMessage };

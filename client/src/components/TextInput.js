@@ -12,6 +12,16 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 
 class TextInput extends React.Component {
+  state = {
+    message: "",
+  };
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
   render() {
     return (
       <FormControl fullWidth variant="outlined" multiline rows={4}>
@@ -19,6 +29,7 @@ class TextInput extends React.Component {
         <OutlinedInput
           id="outlined-adornment-password"
           type="text"
+          name="message"
           endAdornment={
             <InputAdornment position="end">
               <IconButton edge="end">
@@ -26,10 +37,17 @@ class TextInput extends React.Component {
                   style={{
                     color: "rgb(22, 204, 152)",
                   }}
+                  onClick={() =>
+                    this.props.onMessage(
+                      this.state.message,
+                      this.props.activeConversationId
+                    )
+                  }
                 />
               </IconButton>
             </InputAdornment>
           }
+          onChange={(e) => this.handleChange(e)}
           labelWidth={70}
         />
       </FormControl>

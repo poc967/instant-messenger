@@ -6,8 +6,6 @@ import axios from "axios";
 import SingleConversationCard from "./SingleConversationCard";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
-import { v4 as uuidv4 } from "uuid";
-
 const Container = styled.div`
   min-width: 25vw;
   display: flex;
@@ -17,8 +15,6 @@ const Container = styled.div`
   background-color: lightslategrey;
   overflow-y: scroll;
 `;
-
-// background-color: rgb(235, 237, 237);
 
 const AddButton = styled.div`
   display: flex;
@@ -53,12 +49,9 @@ class ConversationsPipeline extends React.Component {
       <Container>
         {this.state.convos.map((convo, index) => (
           <SingleConversationCard
-            id={convo._id}
-            name={`${convo.members[0].firstName} ${convo.members[0].lastName}`}
-            latestMessage={
-              convo.messages !== null ? convo.messages[0].message : null
-            }
-            time={convo.messages !== null ? convo.messages[0].time : null}
+            id={convo.conversation._id}
+            activeConversationId={this.props.activeConversationId}
+            conversation={convo}
             toggleActiveConversation={this.props.toggleActiveConversation}
             key={index}
           />

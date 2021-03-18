@@ -10,14 +10,22 @@ const ConversationSchema = new Schema({
 
 // static methods
 
-ConversationSchema.statics.getAllConversationsByUser = function getAllConversationsByUser(
+ConversationSchema.statics.getAllConversationsByUser = async function getAllConversationsByUser(
   current_user
 ) {
-  let conversations = Conversation.find({
+  let conversations = await Conversation.find({
     members: current_user,
   }).populate("members");
 
   return conversations;
+};
+
+ConversationSchema.statics.getConversationById = async function getConversationById(
+  id
+) {
+  let conversation = await Conversation.findById(id).populate("members");
+
+  return conversation;
 };
 
 // instance methods
@@ -26,7 +34,7 @@ ConversationSchema.methods.getConversationTitle = function getConversationTitle(
   current_user
 ) {
   for (let i = 0; i <= this.members.length - 1; i++) {
-    if (this.members[i] && String(this.members[i]._id) === current_user) {
+    if (this.members[i] && String(this.members[i]._id) !== current_user) {
       return {
         id: this.members[i]._id,
         firstName: this.members[i].firstName,

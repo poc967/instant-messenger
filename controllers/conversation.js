@@ -1,5 +1,6 @@
 const { Conversation } = require("../models/conversation");
 const { User } = require("../models/user");
+const conversationRouter = require("../routers/conversation");
 
 const createConversation = async (request, response) => {
   let { isDirectMessage, users } = request.body;
@@ -40,16 +41,37 @@ const createConversation = async (request, response) => {
 };
 
 const getConversationsByUser = async (request, response, next) => {
-  const { id } = request.user;
+  const currentUser = request.user.id;
 
-  let conversations = await Conversation.getAllConversationsByUser(id);
+  let conversations = await Conversation.getAllConversationsByUser(currentUser);
+  let latestMessage, title;
 
   for (let i = 0; i <= conversations.length - 1; i++) {
-    conversations[i].messages = conversations[i].getLatestMessage();
+    let conversation = conversations[i];
+    latestMessage = conversation.getLatestMessage();
 
-    conversations[i].members = conversations[i].getConversationTitle(id);
+    title = conversation.getConversationTitle(currentUser);
+    conversations[i] = { conversation, latestMessage, title };
   }
   return response.status(200).json(conversations);
 };
 
-module.exports = { createConversation, getConversationsByUser };
+const getConversationById = async (request, response, next) => {
+  const id = request.params.identifier;
+  const currentUser = request.user.id;
+
+  let conversation = await Conversation.getConversationById(id);
+  let title = conversation.getConversationTitle(currentUser);
+
+  if (conversation && title) {
+    return response.status(200).json({ conversation, title });
+  } else {
+    return response.status(400).json({ error: "No conversation found" });
+  }
+};
+
+module.exports = {
+  createConversation,
+  getConversationsByUser,
+  getConversationById,
+};

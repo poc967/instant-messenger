@@ -65,6 +65,15 @@ app.use("/message", messageRouter);
 
 io.on("connection", (socket) => {
   console.log("a user connected");
+
+  socket.on("private message", (message) => {
+    // socket.to(to).emit("private message", {
+    //   content,
+    //   from: socket.id,
+    // });
+    console.log(message);
+  });
+
   socket.on("disconnect", () => {
     console.log("a user disconnected");
   });
