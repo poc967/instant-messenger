@@ -16,6 +16,9 @@ const io = require("socket.io")(httpServer, {
   },
 });
 
+// models
+const { Conversation } = require("./models/conversation");
+
 // Connection to MongoDB -----------------------
 mongoose.connect(process.env.db_connection, {
   useNewUrlParser: true,
@@ -63,10 +66,14 @@ app.use("/user", userRouter);
 app.use("/conversation", conversationRouter);
 app.use("/message", messageRouter);
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log("a user connected");
 
-  socket.join(["60453ed8079d4409e95ffe3c"]);
+  const roomsToJoin = await Conversation.getAllConversationIdByUser(
+    socket.handshake.auth.userId
+  );
+
+  socket.join(roomsToJoin);
 
   socket.on("private message", ({ message, to }) => {
     socket.to(to).emit("private message", {

@@ -7,6 +7,7 @@ const Wrapper = styled.div`
     props.color ? "rgb(22, 204, 152)" : "lightgrey"};
   padding: 0.3rem;
   border-radius: 0.5rem;
+  margin: 0.35rem;
 `;
 
 const Text = styled.span`

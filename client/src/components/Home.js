@@ -40,8 +40,6 @@ class Home extends Component {
     });
 
     socket.on("private message", async ({ message, from }) => {
-      console.log("hey!");
-
       let messages = { ...this.state.activeConversation };
       messages.messages.push(message);
       await this.setState({

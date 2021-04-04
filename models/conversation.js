@@ -10,6 +10,22 @@ const ConversationSchema = new Schema({
 
 // static methods
 
+ConversationSchema.statics.getAllConversationIdByUser = async function getAllConversationIdByUser(
+  currentUser
+) {
+  let conversations = await Conversation.find({
+    members: currentUser,
+  }).select("_id");
+
+  let response = [];
+
+  conversations.map((conversation) => {
+    return response.push(conversation._id.toString());
+  });
+
+  return response;
+};
+
 ConversationSchema.statics.getAllConversationsByUser = async function getAllConversationsByUser(
   current_user
 ) {
