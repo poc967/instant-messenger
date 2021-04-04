@@ -6,7 +6,7 @@ import MessageBubble from "./MessageBubble";
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   color: black;
   align-items: flex-start;
   height: 100%;
@@ -37,7 +37,7 @@ class Messages extends React.Component {
   render() {
     return (
       <Wrapper>
-        {this.props.messages.messages.map((message) => (
+        {this.props.messages.messages.reverse().map((message) => (
           <AlignmentContainer
             authorIsCurrentUser={this.authorIsCurrentUser(
               this.props.currentUser,

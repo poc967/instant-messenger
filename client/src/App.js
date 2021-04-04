@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import styled from "styled-components";
 import "./App.css";
 import { Component } from "react";
@@ -32,9 +31,14 @@ class App extends Component {
     store.dispatch(getUser());
   }
 
+  onAuthentication = () => {
+    socket.auth = { userId: this.props.user.id };
+    socket.connect();
+  };
+
   render() {
     if (this.props.isAuthenticated) {
-      socket.connect();
+      this.onAuthentication();
     }
     return (
       <AppWrapper>

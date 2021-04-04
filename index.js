@@ -66,12 +66,13 @@ app.use("/message", messageRouter);
 io.on("connection", (socket) => {
   console.log("a user connected");
 
-  socket.on("private message", (message) => {
-    // socket.to(to).emit("private message", {
-    //   content,
-    //   from: socket.id,
-    // });
-    console.log(message);
+  socket.join(["60453ed8079d4409e95ffe3c"]);
+
+  socket.on("private message", ({ message, to }) => {
+    socket.to(to).emit("private message", {
+      message,
+      from: socket.id,
+    });
   });
 
   socket.on("disconnect", () => {

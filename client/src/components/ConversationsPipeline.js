@@ -33,21 +33,10 @@ const AddButton = styled.div`
 `;
 
 class ConversationsPipeline extends React.Component {
-  state = {
-    convos: [],
-  };
-
-  async componentDidMount() {
-    const conversations = await axios.get("http://localhost:8080/conversation");
-    this.setState({
-      convos: conversations.data,
-    });
-  }
-
   render() {
     return (
       <Container>
-        {this.state.convos.map((convo, index) => (
+        {this.props.conversations.map((convo, index) => (
           <SingleConversationCard
             id={convo.conversation._id}
             activeConversationId={this.props.activeConversationId}

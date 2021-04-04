@@ -24,7 +24,7 @@ class TextInput extends React.Component {
 
   render() {
     return (
-      <FormControl fullWidth variant="outlined" multiline rows={4}>
+      <FormControl fullWidth variant="outlined">
         <InputLabel>Message</InputLabel>
         <OutlinedInput
           id="outlined-adornment-password"
