@@ -1,5 +1,11 @@
+@font-face {
+  font-family: "Roboto Mono";
+  src: local("RobotoMono-VariableFont_wght"),
+    url(./fonts/RobotoMono-VariableFont_wght.ttf) format("truetype");
+}
+
 * {
-  font-family: "Nunito", sans-serif;
+  font-family: "Roboto Mono", sans-serif;
   box-sizing: border-box;
   scroll-behavior: smooth;
 }

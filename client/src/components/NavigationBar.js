@@ -27,6 +27,20 @@ const StyledNavItem = styled(ListItemIcon)`
   margin-top: 1.5rem;
 `;
 
+const Button = styled.button`
+  border: none;
+  background-color: white;
+`;
+
+const LogOutIcon = styled(ExitToAppOutlinedIcon)`
+  color: rgb(22, 204, 152);
+
+  &:hover {
+    color: lightgreen;
+    transition: 0.3s;
+  }
+`;
+
 const StyledListItem = styled(ListItem)``;
 
 class NavigationBar extends Component {
@@ -57,12 +71,9 @@ class NavigationBar extends Component {
             </ListItem>
             <ListItem>
               <StyledNavItem>
-                <button onClick={this.props.logoutUser}>
-                  <ExitToAppOutlinedIcon
-                    fontSize="large"
-                    style={{ color: "rgb(22, 204, 152)" }}
-                  />
-                </button>
+                <Button onClick={this.props.logoutUser}>
+                  <LogOutIcon fontSize="large" />
+                </Button>
               </StyledNavItem>
             </ListItem>
           </List>

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  display: block;
+  display: flex;
   background-color: ${(props) =>
     props.color ? "rgb(22, 204, 152)" : "lightgrey"};
   padding: 0.3rem;
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
 `;
 
 const Text = styled.span`
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   font-weight: 200;
 `;
 

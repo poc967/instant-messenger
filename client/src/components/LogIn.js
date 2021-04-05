@@ -4,6 +4,7 @@ import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
+import SignUpModal from "./SignUpModal";
 
 // redux
 import { authenticateUser } from "../actions/authActions";
@@ -64,6 +65,7 @@ class LogIn extends Component {
   state = {
     username: "",
     password: "",
+    signUpModalIsOpen: false,
   };
 
   handleSubmit = (e) => {
@@ -136,6 +138,7 @@ class LogIn extends Component {
           <Span>
             Not a member yet? <Link href="#">Sign Up</Link>
           </Span>
+          <SignUpModal />
         </LoginCard>
       </ComponentWrapper>
     );
