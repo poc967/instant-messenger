@@ -23,10 +23,12 @@ const StyledModal = styled(Modal)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
 `;
 
 const ModalHeader = styled.span`
-  font-size: 1rem;
+  font-size: 1.3rem;
+  padding: 1rem;
 `;
 
 const Form = styled.form`
@@ -60,13 +62,43 @@ class SignUpModal extends Component {
           onClose={() => this.props.toggleModalOpen()}
         >
           <ModalBody>
-            <ModalHeader>hey</ModalHeader>
+            <ModalHeader>Sign Up</ModalHeader>
             <Form>
               <TextField
                 type="username"
                 name="username"
                 label="Username"
+                id="username"
+                variant="outlined"
+                margin="dense"
+                style={TextFieldStyle}
+                onChange={this.handleChange}
+              />
+              <TextField
+                type="email"
+                name="email"
+                label="Email"
                 id="exampleEmail"
+                variant="outlined"
+                margin="dense"
+                style={TextFieldStyle}
+                onChange={this.handleChange}
+              />
+              <TextField
+                type="firstName"
+                name="firstName"
+                label="First Name"
+                id="firstName"
+                variant="outlined"
+                margin="dense"
+                style={TextFieldStyle}
+                onChange={this.handleChange}
+              />
+              <TextField
+                type="lastName"
+                name="lastName"
+                label="Last Name"
+                id="lastName"
                 variant="outlined"
                 margin="dense"
                 style={TextFieldStyle}
@@ -77,6 +109,16 @@ class SignUpModal extends Component {
                 name="password"
                 label="Password"
                 id="password"
+                variant="outlined"
+                margin="dense"
+                style={TextFieldStyle}
+                onChange={this.handleChange}
+              />
+              <TextField
+                type="password"
+                name="confirmPassword"
+                label="Confirm Password"
+                id="confirmPassword"
                 variant="outlined"
                 margin="dense"
                 style={TextFieldStyle}
