@@ -68,6 +68,12 @@ class LogIn extends Component {
     signUpModalIsOpen: false,
   };
 
+  toggleModalOpen = async () => {
+    await this.setState({
+      signUpModalIsOpen: !this.state.signUpModalIsOpen,
+    });
+  };
+
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -136,9 +142,18 @@ class LogIn extends Component {
         </LoginCard>
         <LoginCard>
           <Span>
-            Not a member yet? <Link href="#">Sign Up</Link>
+            Not a member yet?{" "}
+            <Link
+              href="#"
+              onClick={() => this.toggleModalOpen(this.state.signUpModalIsOpen)}
+            >
+              Sign Up
+            </Link>
           </Span>
-          <SignUpModal />
+          <SignUpModal
+            signUpModalIsOpen={this.state.signUpModalIsOpen}
+            toggleModalOpen={this.toggleModalOpen}
+          />
         </LoginCard>
       </ComponentWrapper>
     );

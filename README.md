@@ -14,6 +14,9 @@ Socket.io (server) - websocket for pushing new messages to client
 ### Frontend
 
 React
+Redux
+Redux Persist
+Styled Components
 
 ### Installation
 
