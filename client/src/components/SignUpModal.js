@@ -3,6 +3,12 @@ import Modal from "@material-ui/core/Modal";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import e from "cors";
+import PropTypes from "prop-types";
+
+// redux
+import { registerUser } from "../actions/authActions";
+import { connect } from "react-redux";
 
 const TextFieldStyle = {
   paddingBottom: "0.6rem",
@@ -46,6 +52,36 @@ class SignUpModal extends Component {
     firstName: "",
     lastName: "",
     email: "",
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    const {
+      username,
+      password,
+      confirmPassword,
+      firstName,
+      lastName,
+      email,
+    } = this.state;
+
+    if (
+      !username ||
+      !password ||
+      !confirmPassword ||
+      !firstName ||
+      !lastName ||
+      !email
+    ) {
+      return;
+    }
+
+    if (password === confirmPassword) {
+      try {
+        this.props.registerUser(username, password, email, firstName, lastName);
+      } catch (error) {}
+    }
   };
 
   handleChange = async (e) => {
@@ -142,4 +178,8 @@ class SignUpModal extends Component {
   }
 }
 
-export default SignUpModal;
+SignUpModal.propTypes = {
+  registerUser: PropTypes.func.isRequired,
+};
+
+export default connect(null, { registerUser })(SignUpModal);

@@ -10,7 +10,7 @@ userRouter.post(
   createUser,
   passport.authenticate("local"),
   (request, response) => {
-    return response.status(201).json({ message: "new user created" });
+    return response.status(201).json(request.user);
   }
 );
 

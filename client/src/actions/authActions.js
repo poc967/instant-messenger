@@ -6,9 +6,9 @@ import {
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
+  REGISTER_FAIL,
 } from "./types";
 import axios from "axios";
-import socket from "../socket";
 axios.defaults.withCredentials = true;
 
 export const getUser = () => async (dispatch, getState) => {
@@ -65,4 +65,31 @@ export const setUserLoading = () => {
   return {
     type: USER_LOADING,
   };
+};
+
+export const registerUser = (
+  username,
+  password,
+  email,
+  firstName,
+  lastName
+) => async (dispatch) => {
+  dispatch(setUserLoading());
+
+  try {
+    const response = await axios.post("http://localhost:8080/user", {
+      username,
+      password,
+      email,
+      firstName,
+      lastName,
+    });
+    console.log(response);
+    dispatch({
+      type: REGISTER_SUCCESS,
+      payload: response.data,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };

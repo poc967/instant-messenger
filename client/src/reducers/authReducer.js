@@ -5,6 +5,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT_SUCCESS,
+  REGISTER_SUCCESS,
 } from "../actions/types";
 
 const initialState = {
@@ -45,6 +46,7 @@ const authReducer = (state = initialState, action) => {
         loading: false,
       };
     case LOGIN_SUCCESS:
+    case REGISTER_SUCCESS:
       return {
         loading: false,
         isAuthenticated: true,
