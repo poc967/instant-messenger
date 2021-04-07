@@ -8,11 +8,15 @@ I wanted to build a simple slack clone / chat application without tutorial to pr
 
 Express - simple backend architecture
 MongoDB - created a database to handle storage of users, conversations, and messages
-Passport - User authentication using the Passport local auth scheme. This sets a cookie used for auth
+Passport - user authentication using the Passport local auth scheme. This sets a cookie used for auth
+Socket.io (server) - websocket for pushing new messages to client
 
 ### Frontend
 
 React
+Redux
+Redux Persist
+Styled Components
 
 ### Installation
 

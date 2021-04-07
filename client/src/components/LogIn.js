@@ -4,6 +4,7 @@ import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
+import SignUpModal from "./SignUpModal";
 
 // redux
 import { authenticateUser } from "../actions/authActions";
@@ -64,6 +65,13 @@ class LogIn extends Component {
   state = {
     username: "",
     password: "",
+    signUpModalIsOpen: false,
+  };
+
+  toggleModalOpen = async () => {
+    await this.setState({
+      signUpModalIsOpen: !this.state.signUpModalIsOpen,
+    });
   };
 
   handleSubmit = (e) => {
@@ -134,8 +142,18 @@ class LogIn extends Component {
         </LoginCard>
         <LoginCard>
           <Span>
-            Not a member yet? <Link href="#">Sign Up</Link>
+            Not a member yet?{" "}
+            <Link
+              href="#"
+              onClick={() => this.toggleModalOpen(this.state.signUpModalIsOpen)}
+            >
+              Sign Up
+            </Link>
           </Span>
+          <SignUpModal
+            signUpModalIsOpen={this.state.signUpModalIsOpen}
+            toggleModalOpen={this.toggleModalOpen}
+          />
         </LoginCard>
       </ComponentWrapper>
     );

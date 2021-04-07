@@ -12,6 +12,7 @@ const Wrapper = styled.div`
   justify-content: flex-end;
   flex-direction: column;
   padding: 1rem;
+  padding-top: 0;
 `;
 
 const NameBanner = styled.div`
@@ -20,13 +21,12 @@ const NameBanner = styled.div`
   justify-content: center;
   align-items: flex-start;
   width: 100%;
-  height: 7vh;
+  height: 4rem;
   color: black;
-  border-bottom: solid black 1px;
 `;
 
 const Name = styled.span`
-  font-size: 2rem;
+  font-size: 1rem;
   font-weight: 200;
 `;
 
