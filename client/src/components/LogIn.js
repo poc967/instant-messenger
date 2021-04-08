@@ -5,9 +5,12 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import SignUpModal from "./SignUpModal";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 // redux
 import { authenticateUser } from "../actions/authActions";
+import { clearError } from "../actions/errorActions";
 import { connect } from "react-redux";
 
 const ComponentWrapper = styled.div`
@@ -90,6 +93,10 @@ class LogIn extends Component {
     }
   };
 
+  handleClose = () => {
+    this.props.clearError();
+  };
+
   handleChange = (e) => {
     e.preventDefault();
 
@@ -105,6 +112,36 @@ class LogIn extends Component {
     if (this.props.isAuthenticated) return <Redirect to="/" />;
     return (
       <ComponentWrapper>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          open={this.props.error !== null}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+        >
+          <MuiAlert
+            severity={() => {
+              switch (this.props.error) {
+                case "Unauthorized":
+                  return "error";
+                default:
+                  return "info";
+              }
+            }}
+            onClose={this.handleClose}
+          >
+            {() => {
+              switch (this.props.error) {
+                case "Unauthorized":
+                  return "Invalid login credentials";
+                default:
+                  return "We are having trouble completing your request";
+              }
+            }}
+          </MuiAlert>
+        </Snackbar>
         <LoginCard>
           <Title>Log In</Title>
           <Form>
@@ -162,11 +199,16 @@ class LogIn extends Component {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  error: state.error.error,
 });
 
 LogIn.propTypes = {
   authenticateUser: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
+  error: PropTypes.string,
 };
 
-export default connect(mapStateToProps, { authenticateUser })(LogIn);
+export default connect(mapStateToProps, { authenticateUser, clearError })(
+  LogIn
+);

@@ -8,6 +8,7 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
 } from "./types";
+import { returnError } from "./errorActions";
 import axios from "axios";
 axios.defaults.withCredentials = true;
 
@@ -45,6 +46,7 @@ export const authenticateUser = (username, password) => async (dispatch) => {
     dispatch({
       type: AUTH_ERROR,
     });
+    dispatch(returnError(error));
   }
 };
 
