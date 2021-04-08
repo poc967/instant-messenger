@@ -64,6 +64,10 @@ const Link = styled.a`
 const TextFieldStyle = {
   paddingBottom: "0.6rem",
 };
+
+function Alert(props) {
+  return <MuiAlert elevation={6} {...props} />;
+}
 class LogIn extends Component {
   state = {
     username: "",
@@ -114,33 +118,19 @@ class LogIn extends Component {
       <ComponentWrapper>
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
+            vertical: "top",
+            horizontal: "right",
           }}
           open={this.props.error !== null}
           autoHideDuration={6000}
           onClose={this.handleClose}
         >
-          <MuiAlert
-            severity={() => {
-              switch (this.props.error) {
-                case "Unauthorized":
-                  return "error";
-                default:
-                  return "info";
-              }
-            }}
+          <Alert
+            severity={this.props.error == "Unauthorized" ? "error" : "info"}
             onClose={this.handleClose}
           >
-            {() => {
-              switch (this.props.error) {
-                case "Unauthorized":
-                  return "Invalid login credentials";
-                default:
-                  return "We are having trouble completing your request";
-              }
-            }}
-          </MuiAlert>
+            {this.props.error}
+          </Alert>
         </Snackbar>
         <LoginCard>
           <Title>Log In</Title>

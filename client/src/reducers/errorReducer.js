@@ -1,4 +1,4 @@
-import { CLEAR_ERRORS, LOGIN_FAIL, REGISTER_FAIL } from "../actions/types";
+import { CLEAR_ERRORS, FETCH_ERRORS } from "../actions/types";
 
 const initialState = {
   code: null,
@@ -12,8 +12,7 @@ const errorReducer = (state = initialState, action) => {
         code: null,
         error: null,
       };
-    case LOGIN_FAIL:
-    case REGISTER_FAIL:
+    case FETCH_ERRORS:
       return {
         code: action.payload.response.status,
         error: action.payload.response.data,

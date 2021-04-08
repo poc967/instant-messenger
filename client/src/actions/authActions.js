@@ -3,10 +3,8 @@ import {
   USER_LOADING,
   AUTH_ERROR,
   LOGIN_SUCCESS,
-  LOGIN_FAIL,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
-  REGISTER_FAIL,
 } from "./types";
 import { returnError } from "./errorActions";
 import axios from "axios";
@@ -22,7 +20,6 @@ export const getUser = () => async (dispatch, getState) => {
       payload: response.data,
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: AUTH_ERROR,
     });
@@ -58,9 +55,7 @@ export const logoutUser = () => async (dispatch) => {
     dispatch({
       type: LOGOUT_SUCCESS,
     });
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const setUserLoading = () => {
@@ -86,12 +81,14 @@ export const registerUser = (
       firstName,
       lastName,
     });
-    console.log(response);
     dispatch({
       type: REGISTER_SUCCESS,
       payload: response.data,
     });
   } catch (error) {
-    console.error(error);
+    dispatch({
+      type: AUTH_ERROR,
+    });
+    dispatch(returnError(error));
   }
 };
