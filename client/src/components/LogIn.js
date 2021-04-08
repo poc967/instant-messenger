@@ -5,9 +5,12 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import SignUpModal from "./SignUpModal";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 // redux
 import { authenticateUser } from "../actions/authActions";
+import { clearError } from "../actions/errorActions";
 import { connect } from "react-redux";
 
 const ComponentWrapper = styled.div`
@@ -61,6 +64,10 @@ const Link = styled.a`
 const TextFieldStyle = {
   paddingBottom: "0.6rem",
 };
+
+function Alert(props) {
+  return <MuiAlert elevation={6} {...props} />;
+}
 class LogIn extends Component {
   state = {
     username: "",
@@ -90,6 +97,10 @@ class LogIn extends Component {
     }
   };
 
+  handleClose = () => {
+    this.props.clearError();
+  };
+
   handleChange = (e) => {
     e.preventDefault();
 
@@ -105,6 +116,22 @@ class LogIn extends Component {
     if (this.props.isAuthenticated) return <Redirect to="/" />;
     return (
       <ComponentWrapper>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          open={this.props.error !== null}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+        >
+          <Alert
+            severity={this.props.error == "Unauthorized" ? "error" : "info"}
+            onClose={this.handleClose}
+          >
+            {this.props.error}
+          </Alert>
+        </Snackbar>
         <LoginCard>
           <Title>Log In</Title>
           <Form>
@@ -162,11 +189,16 @@ class LogIn extends Component {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  error: state.error.error,
 });
 
 LogIn.propTypes = {
   authenticateUser: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
+  error: PropTypes.string,
 };
 
-export default connect(mapStateToProps, { authenticateUser })(LogIn);
+export default connect(mapStateToProps, { authenticateUser, clearError })(
+  LogIn
+);
