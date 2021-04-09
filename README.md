@@ -6,17 +6,19 @@ I wanted to build a simple slack clone / chat application without tutorial to pr
 
 ### Backend
 
-Express - simple backend architecture
-MongoDB - created a database to handle storage of users, conversations, and messages
-Passport - user authentication using the Passport local auth scheme. This sets a cookie used for auth
-Socket.io (server) - websocket for pushing new messages to client
+- Express.js - simple backend server library
+- MongoDB - created a database to handle storage of users, conversations, and messages
+- Mongoose - JS ORM for interacting with MongoDB
+- Passport - user authentication using the Passport local auth scheme. This sets a cookie used for auth
+- Socket.io (server) - websocket for pushing new messages to client
 
 ### Frontend
 
-React
-Redux
-Redux Persist
-Styled Components
+- React
+- Redux
+- Redux Persist
+- Styled Components
+- Material UI
 
 ### Installation
 
