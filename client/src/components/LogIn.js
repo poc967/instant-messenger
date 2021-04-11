@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import SignUpModal from "./SignUpModal";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import ErrorComponent from "./Error";
 
 // redux
 import { authenticateUser } from "../actions/authActions";
@@ -97,10 +98,6 @@ class LogIn extends Component {
     }
   };
 
-  handleClose = () => {
-    this.props.clearError();
-  };
-
   handleChange = (e) => {
     e.preventDefault();
 
@@ -116,22 +113,7 @@ class LogIn extends Component {
     if (this.props.isAuthenticated) return <Redirect to="/" />;
     return (
       <ComponentWrapper>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={this.props.error !== null}
-          autoHideDuration={6000}
-          onClose={this.handleClose}
-        >
-          <Alert
-            severity={this.props.error == "Unauthorized" ? "error" : "info"}
-            onClose={this.handleClose}
-          >
-            {this.props.error}
-          </Alert>
-        </Snackbar>
+        <ErrorComponent />
         <LoginCard>
           <Title>Log In</Title>
           <Form>
@@ -189,14 +171,11 @@ class LogIn extends Component {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.error.error,
 });
 
 LogIn.propTypes = {
   authenticateUser: PropTypes.func.isRequired,
-  clearError: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  error: PropTypes.string,
 };
 
 export default connect(mapStateToProps, { authenticateUser, clearError })(

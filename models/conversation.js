@@ -66,7 +66,7 @@ ConversationSchema.methods.getConversationTitle = function getConversationTitle(
 ConversationSchema.methods.getLatestMessage = function getLatestMessage() {
   this.messages.length !== 0
     ? (this.messages = this.messages[this.messages.length - 1])
-    : (this.messages = null);
+    : (this.messages = []);
   return this.messages;
 };
 
