@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import axios from "axios";
 
 import MessageBubble from "./MessageBubble";
 
@@ -37,22 +36,26 @@ class Messages extends React.Component {
   render() {
     return (
       <Wrapper>
-        {this.props.messages.messages.reverse().map((message) => (
-          <AlignmentContainer
-            authorIsCurrentUser={this.authorIsCurrentUser(
-              this.props.currentUser,
-              message.author
-            )}
-          >
-            <MessageBubble
-              message={message.message}
+        {this.props.messages.messages !== null ? (
+          this.props.messages.messages.reverse().map((message) => (
+            <AlignmentContainer
               authorIsCurrentUser={this.authorIsCurrentUser(
                 this.props.currentUser,
                 message.author
               )}
-            />
-          </AlignmentContainer>
-        ))}
+            >
+              <MessageBubble
+                message={message.message}
+                authorIsCurrentUser={this.authorIsCurrentUser(
+                  this.props.currentUser,
+                  message.author
+                )}
+              />
+            </AlignmentContainer>
+          ))
+        ) : (
+          <span>No messages yet!</span>
+        )}
       </Wrapper>
     );
   }

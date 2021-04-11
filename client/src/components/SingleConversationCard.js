@@ -47,6 +47,7 @@ const Button = styled.a`
   }
 `;
 
+// hide latest message on active convo card
 const SingleConversationCard = (props) => {
   return (
     <Button
@@ -57,7 +58,9 @@ const SingleConversationCard = (props) => {
     >
       <Name className="child">{`${props.conversation.title.firstName} ${props.conversation.title.lastName}`}</Name>
       <LatestMessage className="child">
-        {props.conversation.latestMessage[0].message}
+        {props.conversation.latestMessage.length !== 0
+          ? props.conversation.latestMessage[0].message
+          : "No messages yet!"}
       </LatestMessage>
       {/* <Time className="child">
         {props.time ? <span>{props.time}</span> : null}

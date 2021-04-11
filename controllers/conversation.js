@@ -1,12 +1,11 @@
 const { Conversation } = require("../models/conversation");
 const { User } = require("../models/user");
-const conversationRouter = require("../routers/conversation");
 
 const createConversation = async (request, response) => {
   let { isDirectMessage, users } = request.body;
 
   if (!isDirectMessage || !users) {
-    return response.status(400).json({ error: "Missing required params" });
+    return response.status(400).json("Missing required params");
   }
 
   users.push(request.user._id);
@@ -33,9 +32,12 @@ const createConversation = async (request, response) => {
       user.save();
     });
     newConversation.save();
+    conversationTitle = newConversation.getConversationTitle(request.user._id);
+    latestMessage = newConversation.getLatestMessage();
     return response.status(201).json({
-      message: "conversation created successfully",
-      data: newConversation.id,
+      conversation: newConversation,
+      title: conversationTitle,
+      latestMessage,
     });
   }
 };
@@ -70,8 +72,26 @@ const getConversationById = async (request, response, next) => {
   }
 };
 
+const findUserByEmailOrUsername = async (request, response, next) => {
+  let { user } = request.body;
+
+  let userToAdd = await User.getUser(user);
+
+  if (!userToAdd) {
+    return response
+      .status(400)
+      .json("No user found with this username or email");
+  }
+
+  console.log(userToAdd);
+  request.body.users = userToAdd;
+  request.body.isDirectMessage = true;
+  next();
+};
+
 module.exports = {
   createConversation,
   getConversationsByUser,
   getConversationById,
+  findUserByEmailOrUsername,
 };
