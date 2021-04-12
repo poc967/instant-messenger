@@ -75,10 +75,10 @@ io.on("connection", async (socket) => {
 
   socket.join(roomsToJoin);
 
-  socket.on("private message", ({ message, to }) => {
-    socket.to(to).emit("private message", {
+  socket.on("private message", ({ message, conversation }) => {
+    socket.to(conversation).emit("private message", {
       message,
-      from: socket.id,
+      conversation,
     });
   });
 

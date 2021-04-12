@@ -39,7 +39,8 @@ class Home extends Component {
       conversations: conversations.data,
     });
 
-    socket.on("private message", async ({ message, from }) => {
+    socket.on("private message", async ({ message, conversation }) => {
+      // need to update this logic to check the active convo first and then the convo list OR just do both ny default
       let messages = { ...this.state.activeConversation };
       messages.messages.push(message);
       await this.setState({
@@ -93,8 +94,12 @@ class Home extends Component {
       });
       socket.emit("private message", {
         message: response.data,
+<<<<<<< Updated upstream
         // to: recipient.pop()._id,
         to: this.state.activeConversation._id,
+=======
+        conversation: this.state.activeConversation._id,
+>>>>>>> Stashed changes
       });
     } catch (error) {}
   };
