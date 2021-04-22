@@ -40,12 +40,17 @@ class Home extends Component {
     });
 
     socket.on("private message", async ({ message, conversation }) => {
-      // need to update this logic to check the active convo first and then the convo list OR just do both ny default
-      let messages = { ...this.state.activeConversation };
-      messages.messages.push(message);
-      await this.setState({
-        messages,
-      });
+      // if the convo id on the incoming messages matches the id of
+      // the order the user has open we will push the message
+
+      if (this.state.activeConversationId === conversation) {
+        let messages = { ...this.state.activeConversation };
+        console.log(messages);
+        messages = messages.messages.push(message);
+        this.setState({
+          messages,
+        });
+      }
     });
   }
 
@@ -94,12 +99,7 @@ class Home extends Component {
       });
       socket.emit("private message", {
         message: response.data,
-<<<<<<< Updated upstream
-        // to: recipient.pop()._id,
-        to: this.state.activeConversation._id,
-=======
         conversation: this.state.activeConversation._id,
->>>>>>> Stashed changes
       });
     } catch (error) {}
   };
