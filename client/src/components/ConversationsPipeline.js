@@ -16,7 +16,7 @@ const Container = styled.div`
   overflow-y: scroll;
 `;
 
-const AddButton = styled.div`
+const AddButton = styled.button`
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -45,11 +45,9 @@ class ConversationsPipeline extends React.Component {
             key={index}
           />
         ))}
-        <Link to="#">
-          <AddButton>
-            <AddRoundedIcon />
-          </AddButton>
-        </Link>
+        <AddButton onClick={() => this.props.toggleModalOpen()}>
+          <AddRoundedIcon />
+        </AddButton>
       </Container>
     );
   }

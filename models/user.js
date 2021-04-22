@@ -13,6 +13,21 @@ const UserSchema = new Schema({
   picture: String,
 });
 
+// static methods
+
+UserSchema.statics.getUser = async function getUser(userToFind) {
+  const user = await User.find({
+    // $or: [{ username: userToFind }, { email: userToFind }],
+    username: userToFind,
+  });
+
+  if (user.length === 0) {
+    return;
+  }
+
+  return user;
+};
+
 const User = mongoose.model("User", UserSchema);
 
 module.exports = { User };

@@ -5,10 +5,13 @@ import socket from "../socket";
 
 // redux
 import { connect } from "react-redux";
+import { returnError, clearError } from "../actions/errorActions";
 import PropTypes from "prop-types";
 
 import ConversationsPipeline from "./ConversationsPipeline";
 import Messager from "./Messager";
+import NewConversationModal from "./NewConversationModal";
+import ErrorComponent from "./Error";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,6 +33,7 @@ class Home extends Component {
       title: {},
     },
     conversations: [],
+    conversationModalIsOpen: false,
   };
 
   // On component did mount, fetch conversation data to populate conversation pipeline
@@ -85,9 +89,6 @@ class Home extends Component {
   // Helper function for sending new private messages
   onMessage = async (message, conversation) => {
     let messages = { ...this.state.activeConversation };
-    let recipient = this.state.activeConversation.members.filter((member) => {
-      return member._id != this.props.user.id;
-    });
     try {
       const response = await axios.post("http://localhost:8080/message", {
         conversation,
@@ -104,19 +105,55 @@ class Home extends Component {
     } catch (error) {}
   };
 
+  // open conversation modal
+  toggleModalOpen = async () => {
+    await this.setState({
+      conversationModalIsOpen: !this.state.conversationModalIsOpen,
+    });
+  };
+
+  // handle user search and conversation creation
+  handleSubmit = async (user) => {
+    let conversations = this.state.conversations;
+    if (!user) {
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:8080/conversation", {
+        user,
+      });
+      // push new convo onto state
+      conversations.push(response.data);
+      this.setState({
+        conversations: conversations,
+      });
+      this.toggleModalOpen();
+    } catch (error) {
+      this.props.returnError(error);
+    }
+  };
+
   render() {
     return (
       <Wrapper>
+        <ErrorComponent />
         <ConversationsPipeline
           toggleActiveConversation={this.toggleActiveConversation}
           activeConversationId={this.state.activeConversationId}
           conversations={this.state.conversations}
+          toggleModalOpen={this.toggleModalOpen}
         />
         <Messager
           activeConversationId={this.state.activeConversationId}
           conversation={this.state.activeConversation}
           onMessage={this.onMessage}
           currentUser={this.props.user.id}
+        />
+        <NewConversationModal
+          modalIsOpen={this.state.conversationModalIsOpen}
+          toggleModalOpen={this.toggleModalOpen}
+          handleSubmit={this.handleSubmit}
         />
       </Wrapper>
     );
@@ -127,6 +164,7 @@ Home.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
+  returnError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -135,4 +173,4 @@ const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps, null)(Home);
+export default connect(mapStateToProps, { returnError, clearError })(Home);

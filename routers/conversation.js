@@ -6,9 +6,15 @@ const {
   createConversation,
   getConversationsByUser,
   getConversationById,
+  findUserByEmailOrUsername,
 } = require("../controllers/conversation");
 
-conversationRouter.post("/", checkForAuthentication, createConversation);
+conversationRouter.post(
+  "/",
+  checkForAuthentication,
+  findUserByEmailOrUsername,
+  createConversation
+);
 conversationRouter.get("/", checkForAuthentication, getConversationsByUser);
 conversationRouter.get(
   "/:identifier",
