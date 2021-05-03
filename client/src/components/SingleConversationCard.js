@@ -47,6 +47,12 @@ const Button = styled.a`
   }
 `;
 
+const OnlineBadge = styled.div`
+  font-size: 0.7rem;
+  text-align: right;
+  padding-right: 5px;
+`;
+
 // hide latest message on active convo card
 const SingleConversationCard = (props) => {
   return (
@@ -62,6 +68,13 @@ const SingleConversationCard = (props) => {
           ? props.conversation.latestMessage[0].message
           : "No messages yet!"}
       </LatestMessage>
+      <OnlineBadge>
+        {props.conversation.online ? (
+          <span style={{ color: "green" }}>Online</span>
+        ) : (
+          <span style={{ color: "red" }}>Offline</span>
+        )}
+      </OnlineBadge>
       {/* <Time className="child">
         {props.time ? <span>{props.time}</span> : null}
       </Time> */}

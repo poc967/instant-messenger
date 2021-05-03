@@ -8,6 +8,8 @@ import {
 } from "./types";
 import { returnError } from "./errorActions";
 import axios from "axios";
+import socket from "../socket";
+
 axios.defaults.withCredentials = true;
 
 export const getUser = () => async (dispatch, getState) => {
@@ -23,6 +25,7 @@ export const getUser = () => async (dispatch, getState) => {
     dispatch({
       type: AUTH_ERROR,
     });
+    socket.disconnect();
   }
 };
 
@@ -44,6 +47,7 @@ export const authenticateUser = (username, password) => async (dispatch) => {
       type: AUTH_ERROR,
     });
     dispatch(returnError(error));
+    socket.disconnect();
   }
 };
 
@@ -55,6 +59,7 @@ export const logoutUser = () => async (dispatch) => {
     dispatch({
       type: LOGOUT_SUCCESS,
     });
+    socket.disconnect();
   } catch (error) {}
 };
 
@@ -90,5 +95,6 @@ export const registerUser = (
       type: AUTH_ERROR,
     });
     dispatch(returnError(error));
+    socket.disconnect();
   }
 };
