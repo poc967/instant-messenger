@@ -43,13 +43,63 @@ class Home extends Component {
       conversations: conversations.data,
     });
 
+    // create a user online handler that kicks off the update of
+    // user state
+    socket.emit("userOnline");
+
+    socket.on("userOnline", async (userId) => {
+      let conversations = [...this.state.conversations].map((conversation) => {
+        if (conversation.title.id === userId) {
+          conversation.online = true;
+        }
+        return conversation;
+      });
+
+      await this.setState({
+        conversations,
+      });
+    });
+
+    // when a user logs off, take in the user id and compare
+    // to our list of convos and update state accordingly
+    socket.on("userOffline", async (userId) => {
+      let conversations = [...this.state.conversations].map((conversation) => {
+        if (conversation.title.id === userId) {
+          conversation.online = false;
+        }
+        return conversation;
+      });
+
+      await this.setState({
+        conversations,
+      });
+    });
+
+    socket.on("users", async (usersOnline) => {
+      let conversations = [...this.state.conversations].map((conversation) => {
+        let id = conversation.title.id;
+
+        usersOnline.map((user) => {
+          if (user.user === id) {
+            return (conversation.online = true);
+          } else {
+            return (conversation.online = false);
+          }
+        });
+        return conversation;
+      });
+
+      await this.setState({
+        conversations,
+      });
+    });
+
     socket.on("private message", async ({ message, conversation }) => {
       // if the convo id on the incoming messages matches the id of
       // the order the user has open we will push the message
 
       if (this.state.activeConversationId === conversation) {
         let messages = { ...this.state.activeConversation };
-        console.log(messages);
         messages = messages.messages.push(message);
         this.setState({
           messages,
