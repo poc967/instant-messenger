@@ -53,6 +53,15 @@ const OnlineBadge = styled.div`
   padding-right: 5px;
 `;
 
+const UnreadMessageBadge = styled.div`
+  text-align: right;
+  display: inline-block;
+  width: 25%;
+  position: absolute;
+  top: 15px;
+  left: 70px;
+`;
+
 // hide latest message on active convo card
 const SingleConversationCard = (props) => {
   return (
@@ -61,8 +70,18 @@ const SingleConversationCard = (props) => {
       onClick={() => props.toggleActiveConversation(props.id)}
       id={props.id}
       activeConversationId={props.activeConversationId}
+      key={props.conversation.conversation.hasUnreadMessages}
     >
-      <Name className="child">{`${props.conversation.title.firstName} ${props.conversation.title.lastName}`}</Name>
+      <Name className="child">
+        {`${props.conversation.title.firstName} ${props.conversation.title.lastName}`}{" "}
+      </Name>
+      {props.conversation.conversation.hasUnreadMessages &&
+      props.currentUser.id !==
+        props.conversation.conversation.messages[
+          props.conversation.conversation.messages.length - 1
+        ].author ? (
+        <span style={{ color: "red" }}>!</span>
+      ) : null}
       <LatestMessage className="child">
         {props.conversation.latestMessage.length !== 0
           ? props.conversation.latestMessage[0].message

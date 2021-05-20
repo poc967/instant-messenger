@@ -31,6 +31,7 @@ class Home extends Component {
       isDirectMessage: null,
       messages: [],
       title: {},
+      hasUnreadMessages: null,
     },
     conversations: [],
     conversationModalIsOpen: false,
@@ -97,12 +98,32 @@ class Home extends Component {
     socket.on("private message", async ({ message, conversation }) => {
       // if the convo id on the incoming messages matches the id of
       // the order the user has open we will push the message
-
       if (this.state.activeConversationId === conversation) {
-        let messages = { ...this.state.activeConversation };
-        messages = messages.messages.push(message);
-        this.setState({
-          messages,
+        let response = await axios.put(
+          `http://localhost:8080/message/markMessagesAsRead/${conversation}`
+        );
+        if (response.status !== 200) {
+          console.error("request could not be completed");
+        } else {
+          let messages = { ...this.state.activeConversation };
+          messages = messages.messages.push(message);
+          this.setState({
+            messages,
+          });
+        }
+      } else {
+        // if the incoming message does not belong to the active conversation,
+        // then mark the conversation as having unread messages
+        let conversations = [...this.state.conversations].map(
+          (singleConversation) => {
+            if (singleConversation.conversation._id === conversation) {
+              singleConversation.conversation.hasUnreadMessages = true;
+            }
+            return singleConversation;
+          }
+        );
+        await this.setState({
+          conversations,
         });
       }
     });
@@ -110,14 +131,21 @@ class Home extends Component {
 
   // helper function for setting the selected conversation from the pipeline as active
   toggleActiveConversation = async (conversationId) => {
-    await this.setState(
-      {
-        activeConversationId: conversationId,
-      },
-      () => {
-        this.getActiveConversationMessages();
-      }
+    let response = await axios.put(
+      `http://localhost:8080/message/markMessagesAsRead/${conversationId}`
     );
+    if (response.status !== 200) {
+      console.error("request could not be completed");
+    } else {
+      await this.setState(
+        {
+          activeConversationId: conversationId,
+        },
+        () => {
+          this.getActiveConversationMessages();
+        }
+      );
+    }
   };
 
   // Helper function for fetching the active conversation messages to display in the chat window upon selection
@@ -132,6 +160,7 @@ class Home extends Component {
         isDirectMessage: conversation.data.conversation.isDirectMessage,
         messages: conversation.data.conversation.messages,
         title: conversation.data.title,
+        hasUnreadMessages: conversation.data.conversation.hasUnreadMessages,
       },
     });
   };
@@ -193,6 +222,7 @@ class Home extends Component {
           activeConversationId={this.state.activeConversationId}
           conversations={this.state.conversations}
           toggleModalOpen={this.toggleModalOpen}
+          currentUser={this.props.user}
         />
         <Messager
           activeConversationId={this.state.activeConversationId}

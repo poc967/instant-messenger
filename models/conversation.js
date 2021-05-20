@@ -6,6 +6,7 @@ const ConversationSchema = new Schema({
   members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   isDirectMessage: Boolean,
   messages: [MessageSchema],
+  hasUnreadMessages: false,
 });
 
 // static methods

@@ -42,6 +42,7 @@ class ConversationsPipeline extends React.Component {
             activeConversationId={this.props.activeConversationId}
             conversation={convo}
             toggleActiveConversation={this.props.toggleActiveConversation}
+            currentUser={this.props.currentUser}
             key={index}
           />
         ))}
