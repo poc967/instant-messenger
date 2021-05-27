@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   display: flex;
   background-color: ${(props) =>
-    props.color ? "rgb(22, 204, 152)" : "lightgrey"};
+    props.color === "true" ? "rgb(22, 204, 152)" : "lightgrey"};
   padding: 0.3rem;
   border-radius: 0.5rem;
   margin: 0.35rem;
@@ -17,7 +17,7 @@ const Text = styled.span`
 
 const MessageBubble = (props) => {
   return (
-    <Wrapper color={props.authorIsCurrentUser}>
+    <Wrapper color={`${props.authorIsCurrentUser}`}>
       <Text>{props.message}</Text>
     </Wrapper>
   );

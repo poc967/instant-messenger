@@ -13,12 +13,6 @@ const LatestMessage = styled.span`
   color: black;
 `;
 
-const Time = styled.span`
-  font-size: 0.75rem;
-  font-weight: 200;
-  text-decoration: none;
-`;
-
 const Button = styled.a`
   background-color: white;
   border: ${(props) =>
@@ -62,7 +56,16 @@ const SingleConversationCard = (props) => {
       id={props.id}
       activeConversationId={props.activeConversationId}
     >
-      <Name className="child">{`${props.conversation.title.firstName} ${props.conversation.title.lastName}`}</Name>
+      <Name className="child">
+        {`${props.conversation.title.firstName} ${props.conversation.title.lastName}`}{" "}
+      </Name>
+      {props.conversation.conversation.hasUnreadMessages &&
+      props.currentUser.id !==
+        props.conversation.conversation.messages[
+          props.conversation.conversation.messages.length - 1
+        ].author ? (
+        <span style={{ color: "red" }}>!</span>
+      ) : null}
       <LatestMessage className="child">
         {props.conversation.latestMessage.length !== 0
           ? props.conversation.latestMessage[0].message

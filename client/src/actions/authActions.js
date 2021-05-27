@@ -55,7 +55,7 @@ export const logoutUser = () => async (dispatch) => {
   dispatch(setUserLoading());
 
   try {
-    const response = await axios.get("http://localhost:8080/user/logout");
+    await axios.get("http://localhost:8080/user/logout");
     dispatch({
       type: LOGOUT_SUCCESS,
     });
@@ -69,32 +69,27 @@ export const setUserLoading = () => {
   };
 };
 
-export const registerUser = (
-  username,
-  password,
-  email,
-  firstName,
-  lastName
-) => async (dispatch) => {
-  dispatch(setUserLoading());
+export const registerUser =
+  (username, password, email, firstName, lastName) => async (dispatch) => {
+    dispatch(setUserLoading());
 
-  try {
-    const response = await axios.post("http://localhost:8080/user", {
-      username,
-      password,
-      email,
-      firstName,
-      lastName,
-    });
-    dispatch({
-      type: REGISTER_SUCCESS,
-      payload: response.data,
-    });
-  } catch (error) {
-    dispatch({
-      type: AUTH_ERROR,
-    });
-    dispatch(returnError(error));
-    socket.disconnect();
-  }
-};
+    try {
+      const response = await axios.post("http://localhost:8080/user", {
+        username,
+        password,
+        email,
+        firstName,
+        lastName,
+      });
+      dispatch({
+        type: REGISTER_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: AUTH_ERROR,
+      });
+      dispatch(returnError(error));
+      socket.disconnect();
+    }
+  };

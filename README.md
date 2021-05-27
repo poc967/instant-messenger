@@ -21,7 +21,7 @@ I wanted to build a simple slack clone / chat application without tutorial to pr
 - Material UI - used a few components mostly related to forms
 - Socket.io (client)
 
-### Installation
+## Installation
 
 ```
 git clone

@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import axios from "axios";
 
 import SingleConversationCard from "./SingleConversationCard";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -42,6 +40,7 @@ class ConversationsPipeline extends React.Component {
             activeConversationId={this.props.activeConversationId}
             conversation={convo}
             toggleActiveConversation={this.props.toggleActiveConversation}
+            currentUser={this.props.currentUser}
             key={index}
           />
         ))}

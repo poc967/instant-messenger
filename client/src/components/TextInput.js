@@ -1,14 +1,9 @@
 import React from "react";
-import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import SendOutlinedIcon from "@material-ui/icons/SendOutlined";
-import Input from "@material-ui/core/Input";
-import FilledInput from "@material-ui/core/FilledInput";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 
 class TextInput extends React.Component {
@@ -32,17 +27,25 @@ class TextInput extends React.Component {
           name="message"
           endAdornment={
             <InputAdornment position="end">
-              <IconButton edge="end">
+              <IconButton
+                edge="end"
+                onClick={() =>
+                  this.props.onMessage(
+                    this.state.message,
+                    this.props.activeConversationId
+                  )
+                }
+              >
                 <SendOutlinedIcon
                   style={{
                     color: "rgb(22, 204, 152)",
                   }}
-                  onClick={() =>
-                    this.props.onMessage(
-                      this.state.message,
-                      this.props.activeConversationId
-                    )
-                  }
+                  // onClick={() =>
+                  //   this.props.onMessage(
+                  //     this.state.message,
+                  //     this.props.activeConversationId
+                  //   )
+                  // }
                 />
               </IconButton>
             </InputAdornment>

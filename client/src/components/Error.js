@@ -29,7 +29,7 @@ class ErrorComponent extends Component {
         onClose={this.handleClose}
       >
         <Alert
-          severity={this.props.error == "Unauthorized" ? "error" : "info"}
+          severity={this.props.error === "Unauthorized" ? "error" : "info"}
           onClose={this.handleClose}
         >
           {this.props.error}

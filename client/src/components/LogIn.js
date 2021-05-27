@@ -5,8 +5,6 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import SignUpModal from "./SignUpModal";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
 import ErrorComponent from "./Error";
 
 // redux
@@ -65,10 +63,6 @@ const Link = styled.a`
 const TextFieldStyle = {
   paddingBottom: "0.6rem",
 };
-
-function Alert(props) {
-  return <MuiAlert elevation={6} {...props} />;
-}
 class LogIn extends Component {
   state = {
     username: "",
