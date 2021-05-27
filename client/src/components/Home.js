@@ -118,6 +118,7 @@ class Home extends Component {
           (singleConversation) => {
             if (singleConversation.conversation._id === conversation) {
               singleConversation.conversation.hasUnreadMessages = true;
+              singleConversation.conversation.messages.push(message);
             }
             return singleConversation;
           }
@@ -137,9 +138,18 @@ class Home extends Component {
     if (response.status !== 200) {
       console.error("request could not be completed");
     } else {
+      let conversations = [...this.state.conversations].map(
+        (singleConversation) => {
+          if (singleConversation.conversation._id === conversationId) {
+            singleConversation.conversation.hasUnreadMessages = false;
+          }
+          return singleConversation;
+        }
+      );
       await this.setState(
         {
           activeConversationId: conversationId,
+          conversations,
         },
         () => {
           this.getActiveConversationMessages();

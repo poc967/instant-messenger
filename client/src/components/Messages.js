@@ -37,12 +37,13 @@ class Messages extends React.Component {
     return (
       <Wrapper>
         {this.props.messages.messages !== null ? (
-          this.props.messages.messages.reverse().map((message) => (
+          this.props.messages.messages.reverse().map((message, index) => (
             <AlignmentContainer
               authorIsCurrentUser={this.authorIsCurrentUser(
                 this.props.currentUser,
                 message.author
               )}
+              key={index}
             >
               <MessageBubble
                 message={message.message}
