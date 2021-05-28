@@ -128,6 +128,10 @@ io.on("connect", async (socket) => {
   });
 });
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/../client/build/index.html"));
+});
+
 httpServer.listen(process.env.PORT, () => {
   console.log(`Listening on port ${process.env.PORT}...`);
 });
