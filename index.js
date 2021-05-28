@@ -10,6 +10,7 @@ const messageRouter = require("./routers/message");
 const dotenv = require("dotenv").config();
 const cors = require("cors");
 const httpServer = require("http").Server(app);
+const path = require("path");
 const io = require("socket.io")(httpServer, {
   cors: {
     origin: "http://localhost:3000",
@@ -118,6 +119,10 @@ io.on("connect", async (socket) => {
       message,
       conversation,
     });
+  });
+
+  app.get("/*", function (req, res) {
+    res.sendFile(path.join(__dirname, "/client/build", "index.html"));
   });
 
   socket.on("disconnect", async () => {
