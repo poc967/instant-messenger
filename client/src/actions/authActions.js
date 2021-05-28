@@ -34,7 +34,7 @@ export const authenticateUser = (username, password) => async (dispatch) => {
 
   try {
     const response = await axios.post(
-      `http://localhost:${process.env.PORT}/user/login`,
+      `${process.env.REACT_APP_base_url}/user/login`,
       {
         username,
         password,
