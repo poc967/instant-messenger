@@ -67,7 +67,7 @@ app.use(
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use("/user", userRouter);
 app.use("/conversation", conversationRouter);
@@ -128,7 +128,7 @@ io.on("connect", async (socket) => {
 });
 
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/../client/build", "index.html"));
+  res.sendFile(path.join(__dirname + "client/build", "index.html"));
 });
 
 httpServer.listen(process.env.PORT, () => {
