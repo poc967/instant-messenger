@@ -9,7 +9,8 @@
     "client:dev": "NODE_ENV=development npm run start --prefix client",
     "client:prod": "NODE_ENV=production npm run start --prefix client",
     "full_app:dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
-    "start": "NODE_ENV=production node index.js"
+    "start": "NODE_ENV=production node index.js",
+    "heroku-postbuild": "cd client && npm install && npm run start"
   },
   "author": "Patrick O'Connor",
   "license": "MIT",
