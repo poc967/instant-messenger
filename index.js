@@ -43,7 +43,10 @@ if (process.env.NODE_ENV === "development") {
 // -----------------------------------------------
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin:
+    process.env.NODE_ENV === "production"
+      ? "https://enigmatic-springs-23614.herokuapp.com"
+      : "http://localhost:3000",
   optionsSuccessStatus: 200,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,

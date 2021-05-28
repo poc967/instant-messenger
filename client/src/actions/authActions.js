@@ -16,7 +16,7 @@ export const getUser = () => async (dispatch, getState) => {
   dispatch(setUserLoading());
 
   try {
-    const response = await axios.get("http://localhost:8080/user");
+    const response = await axios.get(`${process.env.REACT_APP_base_url}/user`);
     dispatch({
       type: USER_LOADED,
       payload: response.data,
@@ -33,10 +33,13 @@ export const authenticateUser = (username, password) => async (dispatch) => {
   dispatch(setUserLoading());
 
   try {
-    const response = await axios.post("http://localhost:8080/user/login", {
-      username,
-      password,
-    });
+    const response = await axios.post(
+      `${process.env.REACT_APP_base_url}/user/login`,
+      {
+        username,
+        password,
+      }
+    );
 
     dispatch({
       type: LOGIN_SUCCESS,
@@ -55,7 +58,7 @@ export const logoutUser = () => async (dispatch) => {
   dispatch(setUserLoading());
 
   try {
-    await axios.get("http://localhost:8080/user/logout");
+    await axios.get(`${process.env.REACT_APP_base_url}/user/logout`);
     dispatch({
       type: LOGOUT_SUCCESS,
     });
@@ -74,13 +77,16 @@ export const registerUser =
     dispatch(setUserLoading());
 
     try {
-      const response = await axios.post("http://localhost:8080/user", {
-        username,
-        password,
-        email,
-        firstName,
-        lastName,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_base_url}/user`,
+        {
+          username,
+          password,
+          email,
+          firstName,
+          lastName,
+        }
+      );
       dispatch({
         type: REGISTER_SUCCESS,
         payload: response.data,

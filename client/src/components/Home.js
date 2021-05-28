@@ -39,7 +39,9 @@ class Home extends Component {
 
   // On component did mount, fetch conversation data to populate conversation pipeline
   async componentDidMount() {
-    const conversations = await axios.get("http://localhost:8080/conversation");
+    const conversations = await axios.get(
+      `${process.env.REACT_APP_base_url}/conversation`
+    );
     this.setState({
       conversations: conversations.data,
     });
@@ -100,7 +102,7 @@ class Home extends Component {
       // the order the user has open we will push the message
       if (this.state.activeConversationId === conversation) {
         let response = await axios.put(
-          `http://localhost:8080/message/markMessagesAsRead/${conversation}`
+          `${process.env.REACT_APP_base_url}/message/markMessagesAsRead/${conversation}`
         );
         if (response.status !== 200) {
           console.error("request could not be completed");
@@ -133,7 +135,7 @@ class Home extends Component {
   // helper function for setting the selected conversation from the pipeline as active
   toggleActiveConversation = async (conversationId) => {
     let response = await axios.put(
-      `http://localhost:8080/message/markMessagesAsRead/${conversationId}`
+      `${process.env.REACT_APP_base_url}/message/markMessagesAsRead/${conversationId}`
     );
     if (response.status !== 200) {
       console.error("request could not be completed");
@@ -161,7 +163,7 @@ class Home extends Component {
   // Helper function for fetching the active conversation messages to display in the chat window upon selection
   getActiveConversationMessages = async () => {
     const conversation = await axios.get(
-      `http://localhost:8080/conversation/${this.state.activeConversationId}`
+      `${process.env.REACT_APP_base_url}/conversation/${this.state.activeConversationId}`
     );
     await this.setState({
       activeConversation: {
@@ -179,10 +181,13 @@ class Home extends Component {
   onMessage = async (message, conversation) => {
     let messages = { ...this.state.activeConversation };
     try {
-      const response = await axios.post("http://localhost:8080/message", {
-        conversation,
-        message,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_base_url}/message`,
+        {
+          conversation,
+          message,
+        }
+      );
       messages.messages.push(response.data);
       await this.setState({
         messages,
@@ -209,9 +214,12 @@ class Home extends Component {
     }
 
     try {
-      const response = await axios.post("http://localhost:8080/conversation", {
-        user,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_base_url}/conversation`,
+        {
+          user,
+        }
+      );
       // push new convo onto state
       conversations.push(response.data);
       this.setState({
