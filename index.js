@@ -121,9 +121,7 @@ io.on("connect", async (socket) => {
     });
   });
 
-  app.get("/*", function (req, res) {
-    res.sendFile(path.join(__dirname, "/client/build", "index.html"));
-  });
+  app.use(express.static(path.join(__dirname, "../client/build")));
 
   socket.on("disconnect", async () => {
     socket.broadcast.emit("userOffline", socket.handshake.auth.userId);
