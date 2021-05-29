@@ -16,7 +16,7 @@ export const getUser = () => async (dispatch, getState) => {
   dispatch(setUserLoading());
 
   try {
-    const response = await axios.get(`${process.env.REACT_APP_base_url}/user`);
+    const response = await axios.get(`http://localhost:80/user`);
     dispatch({
       type: USER_LOADED,
       payload: response.data,
@@ -34,7 +34,7 @@ export const authenticateUser = (username, password) => async (dispatch) => {
 
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_base_url}/user/login`,
+      `http://localhost:80/user/login`,
       {
         username,
         password,
