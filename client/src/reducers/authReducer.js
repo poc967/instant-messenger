@@ -55,6 +55,7 @@ const authReducer = (state = initialState, action) => {
           lastName: action.payload.lastName,
           email: action.payload.email,
           username: action.payload.username,
+          picture: action.payload.picture ? action.payload.picture : null,
         },
       };
     default:

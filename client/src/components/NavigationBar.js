@@ -9,6 +9,7 @@ import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import PropTypes from "prop-types";
+import ProfileModal from "./ProfileModal";
 
 import { logoutUser } from "../actions/authActions";
 import { connect } from "react-redux";
@@ -39,9 +40,63 @@ const LogOutIcon = styled(ExitToAppOutlinedIcon)`
   }
 `;
 
+const ProfileIcon = styled(PersonOutlineOutlinedIcon)`
+  color: rgb(22, 204, 152);
+
+  &:hover {
+    color: lightgreen;
+    transition: 0.3s;
+  }
+`;
+
 const StyledListItem = styled(ListItem)``;
 
+const UserImage = styled.div`
+  background-image: url(${(props) => props.picture});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 25%;
+  top: 89.5%;
+  z-index: 1;
+  width: 3rem;
+  height: 3rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: black;
+`;
+
+const GenericAvatar = styled.div`
+  background-color: rgb(22, 204, 152);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 25%;
+  top: 89.5%;
+  z-index: 1;
+  width: 3rem;
+  height: 3rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: white;
+`;
+
 class NavigationBar extends Component {
+  state = {
+    profileModalIsOpen: false,
+  };
+  // toggle open state of the profile details modal
+  toggleProfileModalOpen = () => {
+    this.setState({
+      profileModalIsOpen: !this.state.profileModalIsOpen,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -58,14 +113,11 @@ class NavigationBar extends Component {
               </Link>
             </StyledListItem>
             <ListItem>
-              <Link to="/profile">
-                <StyledNavItem>
-                  <PersonOutlineOutlinedIcon
-                    fontSize="large"
-                    style={{ color: "rgb(22, 204, 152)" }}
-                  />
-                </StyledNavItem>
-              </Link>
+              <StyledNavItem>
+                <Button onClick={() => this.toggleProfileModalOpen()}>
+                  <ProfileIcon fontSize="large" />
+                </Button>
+              </StyledNavItem>
             </ListItem>
             <ListItem>
               <StyledNavItem>
@@ -75,7 +127,22 @@ class NavigationBar extends Component {
               </StyledNavItem>
             </ListItem>
           </List>
+          {this.props.user.picture !== null ? (
+            <UserImage picture={this.props.user.picture} />
+          ) : (
+            <GenericAvatar>
+              <span>{`${this.props.user.firstName
+                .split("")[0]
+                .toUpperCase()}${this.props.user.lastName
+                .split("")[0]
+                .toUpperCase()}`}</span>
+            </GenericAvatar>
+          )}
         </Nav>
+        <ProfileModal
+          profileModalIsOpen={this.state.profileModalIsOpen}
+          toggleProfileModalOpen={this.toggleProfileModalOpen}
+        />
       </div>
     );
   }
@@ -83,6 +150,11 @@ class NavigationBar extends Component {
 
 NavigationBar.propTypes = {
   logoutUser: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
-export default connect(null, { logoutUser })(NavigationBar);
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+});
+
+export default connect(mapStateToProps, { logoutUser })(NavigationBar);
