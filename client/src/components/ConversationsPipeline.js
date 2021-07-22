@@ -5,7 +5,7 @@ import SingleConversationCard from "./SingleConversationCard";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
 const Container = styled.div`
-  min-width: 25vw;
+  min-width: 32vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,7 +18,7 @@ const AddButton = styled.button`
   display: flex;
   flex-direction: column;
   position: absolute;
-  left: 25%;
+  left: 32%;
   top: 89.5%;
   background-color: rgb(22, 204, 152);
   z-index: 1;
