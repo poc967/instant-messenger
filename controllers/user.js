@@ -63,7 +63,7 @@ const uploadUserProfileImage = async (request, response) => {
     user.save();
     return response
       .status(201)
-      .json({ Message: "image uploaded successfully" });
+      .json({ message: "image uploaded successfully", data: s3Url });
   } catch (error) {
     return response.status(400).json({ Error: "image could not be uploaded" });
   }

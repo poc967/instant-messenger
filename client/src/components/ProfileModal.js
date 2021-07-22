@@ -7,12 +7,16 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Input } from "@material-ui/core";
+import ProfileData from "./ProfileData";
+import axios from "axios";
+import FormData from "form-data";
+import fs from "fs";
 
 const ModalBody = styled.div`
   display: flex;
-  width: 25vw;
+  min-width: 25vw;
   height: auto;
-  background-color: white;
+  background-color: rgb(245, 118, 183);
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -29,6 +33,7 @@ const StyledModal = styled(Modal)`
 const ModalHeader = styled.span`
   font-size: 1.3rem;
   padding: 1rem;
+  color: white;
 `;
 
 const Form = styled.form`
@@ -59,18 +64,20 @@ const UserImage = styled.div`
   border-radius: 50%;
   color: black;
   border: solid grey 3px;
+  background-color: white;
 `;
 
 const GenericAvatar = styled.div`
   background-color: rgb(22, 204, 152);
   display: flex;
   flex-direction: column;
-  width: 3rem;
-  height: 3rem;
+  width: 9rem;
+  height: 9rem;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
   color: white;
+  font-size: 3rem;
 `;
 
 const ProfileDataWrapper = styled.div`
@@ -81,8 +88,63 @@ const ProfileDataWrapper = styled.div`
   align-items: center;
 `;
 
+const EditPictureButton = styled(Button)`
+  border-radius: 50%;
+
+  &:hover {
+    color: lightgreen;
+    transition: 0.3s;
+  }
+`;
+
+const ModalFooter = styled.div`
+  background-color: white;
+  width: 100%;
+  padding: 1rem;
+  padding-top: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+`;
+
 class ProfileModal extends Component {
-  state = {};
+  state = {
+    firstName: "",
+    lastName: "",
+    profileImageUrl: null,
+    profileUploadLoading: false,
+  };
+
+  handlePictureUpload = async (filePath) => {
+    let data = new FormData();
+    data.append("file", filePath.target.files[0]);
+    try {
+      await this.setState({
+        profileUploadLoading: true,
+      });
+      const config = {
+        url: `${process.env.REACT_APP_base_url}/user/upload-profile-image`,
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        data,
+      };
+      const response = await axios(config);
+      await this.setState({
+        profileImageUrl: response.data.data,
+        profileUploadLoading: false,
+      });
+      return;
+    } catch (error) {
+      console.log(error);
+      this.setState({
+        profileUploadLoading: false,
+      });
+      return;
+    }
+  };
 
   render() {
     return (
@@ -94,58 +156,50 @@ class ProfileModal extends Component {
           <ModalBody>
             <ModalHeader>Profile</ModalHeader>
             {this.props.user.picture !== null ? (
-              <Button>
-                <UserImage picture={this.props.user.picture}>
-                  <input type="file" hidden />
+              <Button
+                component="label"
+                style={{ borderRadius: "50%" }}
+                onChange={(e) => console.log(e)}
+              >
+                <UserImage
+                  picture={
+                    this.state.profileImageUrl === null
+                      ? this.props.user.picture
+                      : this.state.profileImageUrl
+                  }
+                >
+                  <input
+                    type="file"
+                    hidden
+                    onChange={(e) => this.handlePictureUpload(e)}
+                  />
                 </UserImage>
               </Button>
             ) : (
-              <GenericAvatar>
-                <span>{`${this.props.user.firstName
-                  .split("")[0]
-                  .toUpperCase()}${this.props.user.lastName
-                  .split("")[0]
-                  .toUpperCase()}`}</span>
-              </GenericAvatar>
+              <Button component="label" style={{ borderRadius: "50%" }}>
+                <input type="file" hidden />
+                <GenericAvatar>
+                  <span>{`${this.props.user.firstName
+                    .split("")[0]
+                    .toUpperCase()}${this.props.user.lastName
+                    .split("")[0]
+                    .toUpperCase()}`}</span>
+                </GenericAvatar>
+              </Button>
             )}
-            <ProfileDataWrapper>
-              <span>Username</span>
-              <span>{this.props.user.username}</span>
-            </ProfileDataWrapper>
-            <ProfileDataWrapper>
-              <span>Name</span>
-              <span>{`${this.props.user.firstName} ${this.props.user.lastName}`}</span>
-            </ProfileDataWrapper>
-            <ProfileDataWrapper>
-              <span>Email</span>
-              <span>{this.props.user.email}</span>
-            </ProfileDataWrapper>
-            <Button variant="contained" component="label">
-              Upload File
-              <input type="file" hidden />
-            </Button>
-            <Form>
-              <TextField
-                type="username"
-                name="username"
-                label="Username or Email"
-                id="username"
-                variant="outlined"
-                margin="dense"
-                style={TextFieldStyle}
-                onChange={this.handleChange}
-              />
+            <ProfileData userData={this.props.user} />
+            <ModalFooter>
               <Button
                 color="primary"
                 style={{
                   backgroundColor: "rgb(22, 204, 152, 0.7)",
                   color: "white",
                 }}
-                // onClick={() => this.props.handleSubmit(this.state.username)}
+                disabled
               >
-                Create
+                save
               </Button>
-            </Form>
+            </ModalFooter>
           </ModalBody>
         </StyledModal>
       </div>

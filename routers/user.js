@@ -4,7 +4,6 @@ const Busboy = require("busboy");
 const { createUser } = require("../controllers/user");
 const passport = require("../helpers/passport");
 const { logout } = require("../helpers/auth");
-const { s3Upload } = require("../helpers/fileHandler");
 const ObjectID = require("mongodb").ObjectID;
 const { uploadUserProfileImage } = require("../controllers/user");
 const { checkForAuthentication } = require("../helpers/auth");
@@ -34,6 +33,7 @@ imageParser = (request, response, next) => {
     });
   });
   busboy.on("finish", async function () {
+    console.log(body, newFileNameForUpload, contentType, contentEncoding);
     response.locals.file = {
       body,
       newFileNameForUpload,
