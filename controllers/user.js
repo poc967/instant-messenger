@@ -59,8 +59,7 @@ const uploadUserProfileImage = async (request, response) => {
       contentType,
       contentEncoding
     );
-    user.picture = s3Url;
-    user.save();
+
     return response
       .status(201)
       .json({ message: "image uploaded successfully", data: s3Url });

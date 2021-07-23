@@ -110,10 +110,34 @@ const ModalFooter = styled.div`
 
 class ProfileModal extends Component {
   state = {
-    firstName: "",
-    lastName: "",
+    firstName: null,
+    lastName: null,
     profileImageUrl: null,
     profileUploadLoading: false,
+  };
+
+  handleSubmit = async () => {
+    const { firstName, lastName, profileImageUrl } = this.state;
+    let data = {};
+    if (firstName) {
+      data["firstName"] = firstName;
+    }
+
+    if (lastName) {
+      data["lastName"] = lastName;
+    }
+
+    if (profileImageUrl) {
+      data["profileImageUrl"] = profileImageUrl;
+    }
+
+    if (data.keys().length === 0) {
+      return;
+    }
+
+    try {
+      let response = await axios.post("/edit-profile", data);
+    } catch (error) {}
   };
 
   handlePictureUpload = async (filePath) => {
@@ -195,7 +219,8 @@ class ProfileModal extends Component {
                   backgroundColor: "rgb(22, 204, 152, 0.7)",
                   color: "white",
                 }}
-                disabled
+                disabled={false}
+                onClick={() => this.handleSubmit()}
               >
                 save
               </Button>
