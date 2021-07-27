@@ -4,13 +4,17 @@ import Modal from "@material-ui/core/Modal";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Input } from "@material-ui/core";
 import ProfileData from "./ProfileData";
 import axios from "axios";
 import FormData from "form-data";
 import fs from "fs";
+
+// redux
+import { updateUser } from "../actions/authActions";
+import { clearError, returnError } from "../actions/errorActions";
+import { connect } from "react-redux";
 
 const ModalBody = styled.div`
   display: flex;
@@ -112,12 +116,12 @@ class ProfileModal extends Component {
   state = {
     firstName: null,
     lastName: null,
-    profileImageUrl: null,
+    picture: null,
     profileUploadLoading: false,
   };
 
   handleSubmit = async () => {
-    const { firstName, lastName, profileImageUrl } = this.state;
+    const { firstName, lastName, picture, profileUploadLoading } = this.state;
     let data = {};
     if (firstName) {
       data["firstName"] = firstName;
@@ -127,17 +131,21 @@ class ProfileModal extends Component {
       data["lastName"] = lastName;
     }
 
-    if (profileImageUrl) {
-      data["profileImageUrl"] = profileImageUrl;
+    if (picture && profileUploadLoading === false) {
+      data["picture"] = picture;
     }
 
-    if (data.keys().length === 0) {
+    if (Object.keys(data).length === 0) {
       return;
     }
 
     try {
-      let response = await axios.post("/edit-profile", data);
-    } catch (error) {}
+      this.props.updateUser(data);
+
+      this.props.toggleProfileModalOpen();
+    } catch (error) {
+      this.props.returnError(error);
+    }
   };
 
   handlePictureUpload = async (filePath) => {
@@ -157,7 +165,7 @@ class ProfileModal extends Component {
       };
       const response = await axios(config);
       await this.setState({
-        profileImageUrl: response.data.data,
+        picture: response.data.data,
         profileUploadLoading: false,
       });
       return;
@@ -187,9 +195,9 @@ class ProfileModal extends Component {
               >
                 <UserImage
                   picture={
-                    this.state.profileImageUrl === null
+                    this.state.picture === null
                       ? this.props.user.picture
-                      : this.state.profileImageUrl
+                      : this.state.picture
                   }
                 >
                   <input
@@ -234,10 +242,14 @@ class ProfileModal extends Component {
 
 ProfileModal.propTypes = {
   user: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired,
+  returnError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(ProfileModal);
+export default connect(mapStateToProps, { updateUser, returnError })(
+  ProfileModal
+);

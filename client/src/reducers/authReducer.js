@@ -5,6 +5,8 @@ import {
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
+  UPDATE_USER_FAIL,
+  UPDATE_USER,
 } from "../actions/types";
 
 const initialState = {
@@ -38,6 +40,20 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+      };
+    case UPDATE_USER:
+      return {
+        ...state,
+        user: {
+          id: action.payload.user._id,
+          firstName: action.payload.user.firstName,
+          lastName: action.payload.user.lastName,
+          email: action.payload.user.email,
+          username: action.payload.user.username,
+          picture: action.payload.user.picture
+            ? action.payload.user.picture
+            : null,
+        },
       };
     case USER_LOADED:
       return {

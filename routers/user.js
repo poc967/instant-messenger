@@ -1,11 +1,14 @@
 const express = require("express");
 const userRouter = express.Router();
 const Busboy = require("busboy");
-const { createUser } = require("../controllers/user");
 const passport = require("../helpers/passport");
 const { logout } = require("../helpers/auth");
 const ObjectID = require("mongodb").ObjectID;
-const { uploadUserProfileImage } = require("../controllers/user");
+const {
+  uploadUserProfileImage,
+  editUser,
+  createUser,
+} = require("../controllers/user");
 const { checkForAuthentication } = require("../helpers/auth");
 
 imageParser = (request, response, next) => {
@@ -51,6 +54,8 @@ userRouter.post(
   imageParser,
   uploadUserProfileImage
 );
+
+userRouter.put("/edit-user", checkForAuthentication, editUser);
 
 userRouter.post(
   "/",

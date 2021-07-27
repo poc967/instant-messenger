@@ -8,3 +8,5 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const FETCH_ERRORS = "FETCH_ERRORS";
+export const UPDATE_USER = "UPDATE_USER";
+export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
