@@ -3,7 +3,6 @@ import { Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 
 import NavigationBar from "./NavigationBar";
-import Profile from "./Profile";
 import Home from "./Home";
 
 const MainWrapper = styled.div`
@@ -27,7 +26,6 @@ const Wrapper = () => {
       <AppContainer>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/profile" component={Profile} />
         </Switch>
       </AppContainer>
     </MainWrapper>

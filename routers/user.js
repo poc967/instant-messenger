@@ -36,7 +36,6 @@ imageParser = (request, response, next) => {
     });
   });
   busboy.on("finish", async function () {
-    console.log(body, newFileNameForUpload, contentType, contentEncoding);
     response.locals.file = {
       body,
       newFileNameForUpload,

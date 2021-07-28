@@ -2,14 +2,11 @@ import React from "react";
 import { Component } from "react";
 import Modal from "@material-ui/core/Modal";
 import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
-import { Input } from "@material-ui/core";
 import ProfileData from "./ProfileData";
 import axios from "axios";
 import FormData from "form-data";
-import fs from "fs";
 
 // redux
 import { updateUser } from "../actions/authActions";
@@ -118,6 +115,7 @@ class ProfileModal extends Component {
     lastName: null,
     picture: null,
     profileUploadLoading: false,
+    editEnabled: false,
   };
 
   handleSubmit = async () => {
@@ -142,6 +140,7 @@ class ProfileModal extends Component {
     try {
       this.props.updateUser(data);
 
+      this.props.toggleEditMode();
       this.props.toggleProfileModalOpen();
     } catch (error) {
       this.props.returnError(error);
@@ -178,6 +177,18 @@ class ProfileModal extends Component {
     }
   };
 
+  handleChange = async (e) => {
+    await this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  toggleEditMode = async () => {
+    await this.setState({
+      editEnabled: !this.state.editEnabled,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -187,12 +198,8 @@ class ProfileModal extends Component {
         >
           <ModalBody>
             <ModalHeader>Profile</ModalHeader>
-            {this.props.user.picture !== null ? (
-              <Button
-                component="label"
-                style={{ borderRadius: "50%" }}
-                onChange={(e) => console.log(e)}
-              >
+            {this.props.user.picture !== null || this.state.picture !== null ? (
+              <Button component="label" style={{ borderRadius: "50%" }}>
                 <UserImage
                   picture={
                     this.state.picture === null
@@ -209,17 +216,27 @@ class ProfileModal extends Component {
               </Button>
             ) : (
               <Button component="label" style={{ borderRadius: "50%" }}>
-                <input type="file" hidden />
+                <input
+                  type="file"
+                  hidden
+                  onChange={(e) => this.handlePictureUpload(e)}
+                />
                 <GenericAvatar>
-                  <span>{`${this.props.user.firstName
-                    .split("")[0]
-                    .toUpperCase()}${this.props.user.lastName
-                    .split("")[0]
-                    .toUpperCase()}`}</span>
+                  <span>
+                    {`${this.props.user.firstName
+                      .split("")[0]
+                      .toUpperCase()}${this.props.user.lastName
+                      .split("")[0]
+                      .toUpperCase()}`}
+                  </span>
                 </GenericAvatar>
               </Button>
             )}
-            <ProfileData userData={this.props.user} />
+            <ProfileData
+              userData={this.props.user}
+              handleChange={this.handleChange}
+              editEnabled={this.state.editEnabled}
+            />
             <ModalFooter>
               <Button
                 color="primary"
@@ -231,6 +248,17 @@ class ProfileModal extends Component {
                 onClick={() => this.handleSubmit()}
               >
                 save
+              </Button>
+              <Button
+                color="primary"
+                style={{
+                  backgroundColor: "rgb(22, 204, 152, 0.7)",
+                  color: "white",
+                }}
+                disabled={false}
+                onClick={() => this.toggleEditMode()}
+              >
+                Edit
               </Button>
             </ModalFooter>
           </ModalBody>

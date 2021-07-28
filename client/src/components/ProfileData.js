@@ -33,15 +33,39 @@ const ProfileData = (props) => {
       </Wrapper>
       <Wrapper>
         <Key>First Name</Key>
-        <Data>{props.userData.firstName}</Data>
+        {!props.editEnabled ? (
+          <Data>{props.userData.firstName}</Data>
+        ) : (
+          <input
+            value={props.userData.username}
+            onChange={props.handleChange}
+            name="firstName"
+          />
+        )}
       </Wrapper>
       <Wrapper>
         <Key>Last Name</Key>
-        <Data>{props.userData.lastName}</Data>
+        {!props.editEnabled ? (
+          <Data>{props.userData.lastName}</Data>
+        ) : (
+          <input
+            value={props.userData.username}
+            onChange={props.handleChange}
+            name="lastName"
+          />
+        )}
       </Wrapper>
       <Wrapper>
         <Key>Email</Key>
-        <Data>{props.userData.email}</Data>
+        {!props.editEnabled ? (
+          <Data>{props.userData.email}</Data>
+        ) : (
+          <input
+            value={props.userData.email}
+            onChange={props.handleChange}
+            name="email"
+          />
+        )}
       </Wrapper>
     </Main>
   );
