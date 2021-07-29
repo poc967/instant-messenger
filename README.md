@@ -11,6 +11,7 @@ I wanted to build a simple slack clone / chat application without tutorial to pr
 - Mongoose - JS ORM for interacting with MongoDB
 - Passport - user authentication using the Passport local auth scheme. This sets a cookie used for auth
 - Socket.io (server) - websocket for pushing new messages to client
+- AWS S3 - Cloud storage solution for storing uploaded image files
 
 ### Frontend
 

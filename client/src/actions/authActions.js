@@ -5,6 +5,8 @@ import {
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
   REGISTER_SUCCESS,
+  UPDATE_USER,
+  UPDATE_USER_FAIL,
 } from "./types";
 import { returnError } from "./errorActions";
 import axios from "axios";
@@ -99,3 +101,23 @@ export const registerUser =
       socket.disconnect();
     }
   };
+
+export const updateUser = (data) => async (dispatch) => {
+  dispatch(setUserLoading());
+
+  const response = await axios.put(
+    `${process.env.REACT_APP_base_url}/user/edit-user`,
+    data
+  );
+  if (response.status === 200) {
+    dispatch({
+      type: UPDATE_USER,
+      payload: response.data,
+    });
+  } else {
+    dispatch({
+      type: UPDATE_USER_FAIL,
+    });
+    dispatch(returnError(response.data));
+  }
+};

@@ -2,15 +2,16 @@ import React from "react";
 import { Component } from "react";
 import Modal from "@material-ui/core/Modal";
 import styled from "styled-components";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { Input } from "@material-ui/core";
 import ProfileData from "./ProfileData";
 import axios from "axios";
 import FormData from "form-data";
-import fs from "fs";
+
+// redux
+import { updateUser } from "../actions/authActions";
+import { clearError, returnError } from "../actions/errorActions";
+import { connect } from "react-redux";
 
 const ModalBody = styled.div`
   display: flex;
@@ -110,10 +111,40 @@ const ModalFooter = styled.div`
 
 class ProfileModal extends Component {
   state = {
-    firstName: "",
-    lastName: "",
-    profileImageUrl: null,
+    firstName: null,
+    lastName: null,
+    picture: null,
     profileUploadLoading: false,
+    editEnabled: false,
+  };
+
+  handleSubmit = async () => {
+    const { firstName, lastName, picture, profileUploadLoading } = this.state;
+    let data = {};
+    if (firstName) {
+      data["firstName"] = firstName;
+    }
+
+    if (lastName) {
+      data["lastName"] = lastName;
+    }
+
+    if (picture && profileUploadLoading === false) {
+      data["picture"] = picture;
+    }
+
+    if (Object.keys(data).length === 0) {
+      return;
+    }
+
+    try {
+      this.props.updateUser(data);
+
+      this.toggleEditMode(false);
+      this.props.toggleProfileModalOpen();
+    } catch (error) {
+      this.props.returnError(error);
+    }
   };
 
   handlePictureUpload = async (filePath) => {
@@ -133,7 +164,7 @@ class ProfileModal extends Component {
       };
       const response = await axios(config);
       await this.setState({
-        profileImageUrl: response.data.data,
+        picture: response.data.data,
         profileUploadLoading: false,
       });
       return;
@@ -146,6 +177,18 @@ class ProfileModal extends Component {
     }
   };
 
+  handleChange = async (e) => {
+    await this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  toggleEditMode = async (override = null) => {
+    await this.setState({
+      editEnabled: override !== null ? override : !this.state.editEnabled,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -155,17 +198,13 @@ class ProfileModal extends Component {
         >
           <ModalBody>
             <ModalHeader>Profile</ModalHeader>
-            {this.props.user.picture !== null ? (
-              <Button
-                component="label"
-                style={{ borderRadius: "50%" }}
-                onChange={(e) => console.log(e)}
-              >
+            {this.props.user.picture !== null || this.state.picture !== null ? (
+              <Button component="label" style={{ borderRadius: "50%" }}>
                 <UserImage
                   picture={
-                    this.state.profileImageUrl === null
+                    this.state.picture === null
                       ? this.props.user.picture
-                      : this.state.profileImageUrl
+                      : this.state.picture
                   }
                 >
                   <input
@@ -177,27 +216,50 @@ class ProfileModal extends Component {
               </Button>
             ) : (
               <Button component="label" style={{ borderRadius: "50%" }}>
-                <input type="file" hidden />
+                <input
+                  type="file"
+                  hidden
+                  onChange={(e) => this.handlePictureUpload(e)}
+                />
                 <GenericAvatar>
-                  <span>{`${this.props.user.firstName
-                    .split("")[0]
-                    .toUpperCase()}${this.props.user.lastName
-                    .split("")[0]
-                    .toUpperCase()}`}</span>
+                  <span>
+                    {`${this.props.user.firstName
+                      .split("")[0]
+                      .toUpperCase()}${this.props.user.lastName
+                      .split("")[0]
+                      .toUpperCase()}`}
+                  </span>
                 </GenericAvatar>
               </Button>
             )}
-            <ProfileData userData={this.props.user} />
+            <ProfileData
+              userData={this.props.user}
+              handleChange={this.handleChange}
+              editEnabled={this.state.editEnabled}
+            />
             <ModalFooter>
               <Button
                 color="primary"
                 style={{
                   backgroundColor: "rgb(22, 204, 152, 0.7)",
                   color: "white",
+                  marginRight: "0.5rem",
                 }}
-                disabled
+                disabled={false}
+                onClick={() => this.handleSubmit()}
               >
                 save
+              </Button>
+              <Button
+                color="primary"
+                style={{
+                  backgroundColor: "rgb(22, 204, 152, 0.7)",
+                  color: "white",
+                }}
+                disabled={false}
+                onClick={() => this.toggleEditMode()}
+              >
+                Edit
               </Button>
             </ModalFooter>
           </ModalBody>
@@ -209,10 +271,14 @@ class ProfileModal extends Component {
 
 ProfileModal.propTypes = {
   user: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired,
+  returnError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
 });
 
-export default connect(mapStateToProps)(ProfileModal);
+export default connect(mapStateToProps, { updateUser, returnError })(
+  ProfileModal
+);
