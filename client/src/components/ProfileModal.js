@@ -140,7 +140,7 @@ class ProfileModal extends Component {
     try {
       this.props.updateUser(data);
 
-      this.props.toggleEditMode();
+      this.toggleEditMode(false);
       this.props.toggleProfileModalOpen();
     } catch (error) {
       this.props.returnError(error);
@@ -183,9 +183,9 @@ class ProfileModal extends Component {
     });
   };
 
-  toggleEditMode = async () => {
+  toggleEditMode = async (override = null) => {
     await this.setState({
-      editEnabled: !this.state.editEnabled,
+      editEnabled: override !== null ? override : !this.state.editEnabled,
     });
   };
 
@@ -243,6 +243,7 @@ class ProfileModal extends Component {
                 style={{
                   backgroundColor: "rgb(22, 204, 152, 0.7)",
                   color: "white",
+                  marginRight: "0.5rem",
                 }}
                 disabled={false}
                 onClick={() => this.handleSubmit()}

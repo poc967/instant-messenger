@@ -37,7 +37,7 @@ const ProfileData = (props) => {
           <Data>{props.userData.firstName}</Data>
         ) : (
           <input
-            value={props.userData.username}
+            placeholder={props.userData.username}
             onChange={props.handleChange}
             name="firstName"
           />
@@ -49,7 +49,7 @@ const ProfileData = (props) => {
           <Data>{props.userData.lastName}</Data>
         ) : (
           <input
-            value={props.userData.username}
+            placeholder={props.userData.username}
             onChange={props.handleChange}
             name="lastName"
           />
@@ -61,7 +61,7 @@ const ProfileData = (props) => {
           <Data>{props.userData.email}</Data>
         ) : (
           <input
-            value={props.userData.email}
+            placeholder={props.userData.email}
             onChange={props.handleChange}
             name="email"
           />
