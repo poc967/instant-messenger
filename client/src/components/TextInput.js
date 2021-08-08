@@ -17,6 +17,18 @@ class TextInput extends React.Component {
     });
   };
 
+  clearInputOnClick = async () => {
+    await this.setState({
+      message: "",
+    });
+  };
+
+  bundleCreateMessageAndClear = () => {
+    this.props.onMessage(this.state.message, this.props.activeConversationId);
+
+    this.clearInputOnClick();
+  };
+
   render() {
     return (
       <FormControl fullWidth variant="outlined">
@@ -25,27 +37,17 @@ class TextInput extends React.Component {
           id="outlined-adornment-password"
           type="text"
           name="message"
+          value={this.state.message}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
                 edge="end"
-                onClick={() =>
-                  this.props.onMessage(
-                    this.state.message,
-                    this.props.activeConversationId
-                  )
-                }
+                onClick={() => this.bundleCreateMessageAndClear()}
               >
                 <SendOutlinedIcon
                   style={{
                     color: "rgb(22, 204, 152)",
                   }}
-                  // onClick={() =>
-                  //   this.props.onMessage(
-                  //     this.state.message,
-                  //     this.props.activeConversationId
-                  //   )
-                  // }
                 />
               </IconButton>
             </InputAdornment>

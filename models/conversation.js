@@ -11,39 +11,36 @@ const ConversationSchema = new Schema({
 
 // static methods
 
-ConversationSchema.statics.getAllConversationIdByUser = async function getAllConversationIdByUser(
-  currentUser
-) {
-  let conversations = await Conversation.find({
-    members: currentUser,
-  }).select("_id");
+ConversationSchema.statics.getAllConversationIdByUser =
+  async function getAllConversationIdByUser(currentUser) {
+    let conversations = await Conversation.find({
+      members: currentUser,
+    }).select("_id");
 
-  let response = [];
+    let response = [];
 
-  conversations.map((conversation) => {
-    return response.push(conversation._id.toString());
-  });
+    conversations.map((conversation) => {
+      return response.push(conversation._id.toString());
+    });
 
-  return response;
-};
+    return response;
+  };
 
-ConversationSchema.statics.getAllConversationsByUser = async function getAllConversationsByUser(
-  current_user
-) {
-  let conversations = await Conversation.find({
-    members: current_user,
-  }).populate("members");
+ConversationSchema.statics.getAllConversationsByUser =
+  async function getAllConversationsByUser(current_user) {
+    let conversations = await Conversation.find({
+      members: current_user,
+    }).populate("members");
 
-  return conversations;
-};
+    return conversations;
+  };
 
-ConversationSchema.statics.getConversationById = async function getConversationById(
-  id
-) {
-  let conversation = await Conversation.findById(id).populate("members");
+ConversationSchema.statics.getConversationById =
+  async function getConversationById(id) {
+    let conversation = await Conversation.findById(id).populate("members");
 
-  return conversation;
-};
+    return conversation;
+  };
 
 // instance methods
 
@@ -56,6 +53,7 @@ ConversationSchema.methods.getConversationTitle = function getConversationTitle(
         id: this.members[i]._id,
         firstName: this.members[i].firstName,
         lastName: this.members[i].lastName,
+        picture: this.members[i].picture ? this.members[i].picture : null,
       };
     } else {
       continue;
